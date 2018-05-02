@@ -8328,58 +8328,20 @@ var _mica5$clarify$Msg$CreateLifeGoalState = {ctor: 'CreateLifeGoalState'};
 var _mica5$clarify$Msg$CreateLifeGoal = {ctor: 'CreateLifeGoal'};
 var _mica5$clarify$Msg$LifeGoalState = {ctor: 'LifeGoalState'};
 var _mica5$clarify$Msg$TaskState = {ctor: 'TaskState'};
+var _mica5$clarify$Msg$CreateState = {ctor: 'CreateState'};
 var _mica5$clarify$Msg$TodayState = {ctor: 'TodayState'};
 
 var _mica5$clarify$Update$update = F2(
-	function (msg, model1) {
-		var model = _elm_lang$core$Native_Utils.update(
-			model1,
-			{
-				state: function () {
-					var _p0 = model1.state;
-					switch (_p0) {
-						case 'TodayState':
-							return 'TodayState';
-						case 'AddToday':
-							return 'TodayState';
-						case 'RemoveToday':
-							return 'TodayState';
-						case 'TaskState':
-							return 'TaskState';
-						case 'CreateTaskState':
-							return 'TaskState';
-						case 'CreateTask':
-							return 'TaskState';
-						case 'UpdateTaskEstimatedMinutes':
-							return 'TaskState';
-						case 'UpdateTaskRegister':
-							return 'TaskState';
-						case 'CreateLifeGoal':
-							return 'lifeGoalsView';
-						case 'CreateLifeGoalState':
-							return 'lifeGoalsView';
-						case 'LifeGoalsState':
-							return 'lifeGoalsView';
-						case 'LifeGoalState':
-							return 'lifeGoalsView';
-						case 'UpdateCreateLifeGoalRegister':
-							return 'lifeGoalsView';
-						case 'DeleteLifeGoal':
-							return 'lifeGoalsView';
-						default:
-							return model1.state;
-					}
-				}()
-			});
-		var _p1 = msg;
-		switch (_p1.ctor) {
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
 			case 'UpdateCreateLifeGoalRegister':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							new_life_goal_title: _p1._0,
+							new_life_goal_title: _p0._0,
 							debug: _elm_lang$core$Basics$toString(msg)
 						}),
 					{ctor: '[]'});
@@ -8410,11 +8372,43 @@ var _mica5$clarify$Update$update = F2(
 						}),
 					{ctor: '[]'});
 			case 'UpdateTaskRegister':
-				var _p5 = _p1._1;
-				var _p2 = _p1._0;
-				switch (_p2) {
+				var _p4 = _p0._1;
+				var _p1 = _p0._0;
+				switch (_p1) {
 					case 'estimatedMinutes':
-						var _p3 = _elm_lang$core$String$toInt(_p5);
+						var _p2 = _elm_lang$core$String$toInt(_p4);
+						if (_p2.ctor === 'Err') {
+							return A2(
+								_elm_lang$core$Platform_Cmd_ops['!'],
+								model,
+								{ctor: '[]'});
+						} else {
+							var newTaskRegister = model.newTaskRegister;
+							return A2(
+								_elm_lang$core$Platform_Cmd_ops['!'],
+								_elm_lang$core$Native_Utils.update(
+									model,
+									{
+										newTaskRegister: _elm_lang$core$Native_Utils.update(
+											newTaskRegister,
+											{estimatedMinutes: _p2._0})
+									}),
+								{ctor: '[]'});
+						}
+					case 'description':
+						var newTaskRegister = model.newTaskRegister;
+						return A2(
+							_elm_lang$core$Platform_Cmd_ops['!'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									newTaskRegister: _elm_lang$core$Native_Utils.update(
+										newTaskRegister,
+										{title: _p4})
+								}),
+							{ctor: '[]'});
+					case 'lifeGoal':
+						var _p3 = _elm_lang$core$String$toInt(_p4);
 						if (_p3.ctor === 'Err') {
 							return A2(
 								_elm_lang$core$Platform_Cmd_ops['!'],
@@ -8429,39 +8423,7 @@ var _mica5$clarify$Update$update = F2(
 									{
 										newTaskRegister: _elm_lang$core$Native_Utils.update(
 											newTaskRegister,
-											{estimatedMinutes: _p3._0})
-									}),
-								{ctor: '[]'});
-						}
-					case 'description':
-						var newTaskRegister = model.newTaskRegister;
-						return A2(
-							_elm_lang$core$Platform_Cmd_ops['!'],
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									newTaskRegister: _elm_lang$core$Native_Utils.update(
-										newTaskRegister,
-										{title: _p5})
-								}),
-							{ctor: '[]'});
-					case 'lifeGoal':
-						var _p4 = _elm_lang$core$String$toInt(_p5);
-						if (_p4.ctor === 'Err') {
-							return A2(
-								_elm_lang$core$Platform_Cmd_ops['!'],
-								model,
-								{ctor: '[]'});
-						} else {
-							var newTaskRegister = model.newTaskRegister;
-							return A2(
-								_elm_lang$core$Platform_Cmd_ops['!'],
-								_elm_lang$core$Native_Utils.update(
-									model,
-									{
-										newTaskRegister: _elm_lang$core$Native_Utils.update(
-											newTaskRegister,
-											{lifeGoalID: _p4._0})
+											{lifeGoalID: _p3._0})
 									}),
 								{ctor: '[]'});
 						}
@@ -8472,10 +8434,10 @@ var _mica5$clarify$Update$update = F2(
 							{ctor: '[]'});
 				}
 			case 'UpdateTaskEstimatedMinutes':
-				var _p8 = _p1._0;
-				var _p7 = _p1._1;
-				var _p6 = _elm_lang$core$String$toInt(_p7);
-				if (_p6.ctor === 'Err') {
+				var _p7 = _p0._0;
+				var _p6 = _p0._1;
+				var _p5 = _elm_lang$core$String$toInt(_p6);
+				if (_p5.ctor === 'Err') {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						model,
@@ -8491,14 +8453,14 @@ var _mica5$clarify$Update$update = F2(
 									'taskID ',
 									A2(
 										_elm_lang$core$Basics_ops['++'],
-										_elm_lang$core$Basics$toString(_p8),
-										A2(_elm_lang$core$Basics_ops['++'], '; estMinutesStr ', _p7))),
+										_elm_lang$core$Basics$toString(_p7),
+										A2(_elm_lang$core$Basics_ops['++'], '; estMinutesStr ', _p6))),
 								tasks: A2(
 									_elm_lang$core$List$map,
 									function (t) {
-										return (!_elm_lang$core$Native_Utils.eq(t.taskID, _p8)) ? t : _elm_lang$core$Native_Utils.update(
+										return (!_elm_lang$core$Native_Utils.eq(t.taskID, _p7)) ? t : _elm_lang$core$Native_Utils.update(
 											t,
-											{estimatedMinutes: _p6._0});
+											{estimatedMinutes: _p5._0});
 									},
 									model.tasks)
 							}),
@@ -8537,7 +8499,7 @@ var _mica5$clarify$Update$update = F2(
 							life_goals: A2(
 								_elm_lang$core$List$filter,
 								function (lifeGoal) {
-									return !_elm_lang$core$Native_Utils.eq(lifeGoal.id, _p1._0);
+									return !_elm_lang$core$Native_Utils.eq(lifeGoal.id, _p0._0);
 								},
 								model.life_goals)
 						}),
@@ -8555,7 +8517,7 @@ var _mica5$clarify$Update$update = F2(
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							todayTaskIds: {ctor: '::', _0: _p1._0, _1: model.todayTaskIds}
+							todayTaskIds: {ctor: '::', _0: _p0._0, _1: model.todayTaskIds}
 						}),
 					{ctor: '[]'});
 			case 'RemoveToday':
@@ -8567,7 +8529,7 @@ var _mica5$clarify$Update$update = F2(
 							todayTaskIds: A2(
 								_elm_lang$core$List$filter,
 								function (tid) {
-									return !_elm_lang$core$Native_Utils.eq(tid, _p1._0);
+									return !_elm_lang$core$Native_Utils.eq(tid, _p0._0);
 								},
 								model.todayTaskIds)
 						}),
@@ -8578,7 +8540,8 @@ var _mica5$clarify$Update$update = F2(
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							debug: _elm_lang$core$Basics$toString(msg)
+							debug: _elm_lang$core$Basics$toString(msg),
+							state: _elm_lang$core$Basics$toString(msg)
 						}),
 					{ctor: '[]'});
 		}
@@ -8945,6 +8908,28 @@ var _mica5$clarify$View$htmlNavigationBar = function (model) {
 					}
 				}
 			}
+		});
+};
+var _mica5$clarify$View$createViewButton = function (model) {
+	return A2(
+		_elm_lang$html$Html$a,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$href('#'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$CreateState),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Native_Utils.eq(model.state, 'CreateState') ? _mica5$clarify$View$redFont : _mica5$clarify$View$noStyle,
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('Create'),
+			_1: {ctor: '[]'}
 		});
 };
 var _mica5$clarify$View$htmlAppHeader = A2(
@@ -9346,33 +9331,11 @@ var _mica5$clarify$View$currentView = function (model) {
 	switch (_p0) {
 		case 'TodayState':
 			return _mica5$clarify$View$todayView(model);
-		case 'AddToday':
-			return _mica5$clarify$View$todayView(model);
-		case 'RemoveToday':
-			return _mica5$clarify$View$todayView(model);
 		case 'TaskState':
 			return _mica5$clarify$View$taskView(model);
-		case 'CreateTaskState':
-			return _mica5$clarify$View$taskView(model);
-		case 'CreateTask':
-			return _mica5$clarify$View$taskView(model);
-		case 'UpdateTaskEstimatedMinutes':
-			return _mica5$clarify$View$taskView(model);
-		case 'UpdateTaskRegister':
-			return _mica5$clarify$View$taskView(model);
-		case 'lifeGoalsView':
-			return _mica5$clarify$View$lifeGoalsView(model);
-		case 'CreateLifeGoal':
-			return _mica5$clarify$View$lifeGoalsView(model);
-		case 'CreateLifeGoalState':
-			return _mica5$clarify$View$lifeGoalsView(model);
 		case 'LifeGoalsState':
 			return _mica5$clarify$View$lifeGoalsView(model);
 		case 'LifeGoalState':
-			return _mica5$clarify$View$lifeGoalsView(model);
-		case 'UpdateCreateLifeGoalRegister':
-			return _mica5$clarify$View$lifeGoalsView(model);
-		case 'DeleteLifeGoal':
 			return _mica5$clarify$View$lifeGoalsView(model);
 		default:
 			return _mica5$clarify$View$todayView(model);
