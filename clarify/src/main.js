@@ -8311,6 +8311,10 @@ var _mica5$clarify$Msg$DeleteLifeGoal = function (a) {
 	return {ctor: 'DeleteLifeGoal', _0: a};
 };
 var _mica5$clarify$Msg$LifeGoalsState = {ctor: 'LifeGoalsState'};
+var _mica5$clarify$Msg$UpdateTaskGoal = F2(
+	function (a, b) {
+		return {ctor: 'UpdateTaskGoal', _0: a, _1: b};
+	});
 var _mica5$clarify$Msg$UpdateTaskRegister = F2(
 	function (a, b) {
 		return {ctor: 'UpdateTaskRegister', _0: a, _1: b};
@@ -8371,44 +8375,36 @@ var _mica5$clarify$Update$update = F2(
 							debug: _elm_lang$core$Basics$toString(msg)
 						}),
 					{ctor: '[]'});
+			case 'UpdateTaskGoal':
+				var _p1 = _elm_lang$core$String$toInt(_p0._1);
+				if (_p1.ctor === 'Err') {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{ctor: '[]'});
+				} else {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								tasks: A2(
+									_elm_lang$core$List$map,
+									function (t) {
+										return (!_elm_lang$core$Native_Utils.eq(t.taskID, _p0._0)) ? t : _elm_lang$core$Native_Utils.update(
+											t,
+											{lifeGoalID: _p1._0});
+									},
+									model.tasks)
+							}),
+						{ctor: '[]'});
+				}
 			case 'UpdateTaskRegister':
-				var _p4 = _p0._1;
-				var _p1 = _p0._0;
-				switch (_p1) {
+				var _p5 = _p0._1;
+				var _p2 = _p0._0;
+				switch (_p2) {
 					case 'estimatedMinutes':
-						var _p2 = _elm_lang$core$String$toInt(_p4);
-						if (_p2.ctor === 'Err') {
-							return A2(
-								_elm_lang$core$Platform_Cmd_ops['!'],
-								model,
-								{ctor: '[]'});
-						} else {
-							var newTaskRegister = model.newTaskRegister;
-							return A2(
-								_elm_lang$core$Platform_Cmd_ops['!'],
-								_elm_lang$core$Native_Utils.update(
-									model,
-									{
-										newTaskRegister: _elm_lang$core$Native_Utils.update(
-											newTaskRegister,
-											{estimatedMinutes: _p2._0})
-									}),
-								{ctor: '[]'});
-						}
-					case 'description':
-						var newTaskRegister = model.newTaskRegister;
-						return A2(
-							_elm_lang$core$Platform_Cmd_ops['!'],
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									newTaskRegister: _elm_lang$core$Native_Utils.update(
-										newTaskRegister,
-										{title: _p4})
-								}),
-							{ctor: '[]'});
-					case 'lifeGoal':
-						var _p3 = _elm_lang$core$String$toInt(_p4);
+						var _p3 = _elm_lang$core$String$toInt(_p5);
 						if (_p3.ctor === 'Err') {
 							return A2(
 								_elm_lang$core$Platform_Cmd_ops['!'],
@@ -8423,7 +8419,39 @@ var _mica5$clarify$Update$update = F2(
 									{
 										newTaskRegister: _elm_lang$core$Native_Utils.update(
 											newTaskRegister,
-											{lifeGoalID: _p3._0})
+											{estimatedMinutes: _p3._0})
+									}),
+								{ctor: '[]'});
+						}
+					case 'description':
+						var newTaskRegister = model.newTaskRegister;
+						return A2(
+							_elm_lang$core$Platform_Cmd_ops['!'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									newTaskRegister: _elm_lang$core$Native_Utils.update(
+										newTaskRegister,
+										{title: _p5})
+								}),
+							{ctor: '[]'});
+					case 'lifeGoal':
+						var _p4 = _elm_lang$core$String$toInt(_p5);
+						if (_p4.ctor === 'Err') {
+							return A2(
+								_elm_lang$core$Platform_Cmd_ops['!'],
+								model,
+								{ctor: '[]'});
+						} else {
+							var newTaskRegister = model.newTaskRegister;
+							return A2(
+								_elm_lang$core$Platform_Cmd_ops['!'],
+								_elm_lang$core$Native_Utils.update(
+									model,
+									{
+										newTaskRegister: _elm_lang$core$Native_Utils.update(
+											newTaskRegister,
+											{lifeGoalID: _p4._0})
 									}),
 								{ctor: '[]'});
 						}
@@ -8434,10 +8462,10 @@ var _mica5$clarify$Update$update = F2(
 							{ctor: '[]'});
 				}
 			case 'UpdateTaskEstimatedMinutes':
-				var _p7 = _p0._0;
-				var _p6 = _p0._1;
-				var _p5 = _elm_lang$core$String$toInt(_p6);
-				if (_p5.ctor === 'Err') {
+				var _p8 = _p0._0;
+				var _p7 = _p0._1;
+				var _p6 = _elm_lang$core$String$toInt(_p7);
+				if (_p6.ctor === 'Err') {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						model,
@@ -8453,14 +8481,14 @@ var _mica5$clarify$Update$update = F2(
 									'taskID ',
 									A2(
 										_elm_lang$core$Basics_ops['++'],
-										_elm_lang$core$Basics$toString(_p7),
-										A2(_elm_lang$core$Basics_ops['++'], '; estMinutesStr ', _p6))),
+										_elm_lang$core$Basics$toString(_p8),
+										A2(_elm_lang$core$Basics_ops['++'], '; estMinutesStr ', _p7))),
 								tasks: A2(
 									_elm_lang$core$List$map,
 									function (t) {
-										return (!_elm_lang$core$Native_Utils.eq(t.taskID, _p7)) ? t : _elm_lang$core$Native_Utils.update(
+										return (!_elm_lang$core$Native_Utils.eq(t.taskID, _p8)) ? t : _elm_lang$core$Native_Utils.update(
 											t,
-											{estimatedMinutes: _p5._0});
+											{estimatedMinutes: _p6._0});
 									},
 									model.tasks)
 							}),
@@ -8685,14 +8713,14 @@ var _mica5$clarify$View$estimatedMinutesSelector = function (task) {
 		},
 		{ctor: '[]'});
 };
-var _mica5$clarify$View$lifeGoalSelector = F2(
+var _mica5$clarify$View$lifeGoalSelector2 = F2(
 	function (life_goals, task) {
 		return A2(
 			_elm_lang$html$Html$select,
 			{
 				ctor: '::',
 				_0: _elm_lang$html$Html_Events$onInput(
-					_mica5$clarify$Msg$UpdateTaskRegister('lifeGoal')),
+					_mica5$clarify$Msg$UpdateTaskGoal(task.taskID)),
 				_1: {ctor: '[]'}
 			},
 			A2(
@@ -8712,7 +8740,15 @@ var _mica5$clarify$View$lifeGoalSelector = F2(
 							_1: {ctor: '[]'}
 						});
 				},
-				life_goals));
+				{
+					ctor: '::',
+					_0: {
+						title: 'Life Goal Selection',
+						priorities: {ctor: '[]'},
+						id: 0
+					},
+					_1: life_goals
+				}));
 	});
 var _mica5$clarify$View$tasksToHtmlList = F3(
 	function (tasksView, model, tasks) {
@@ -8766,21 +8802,32 @@ var _mica5$clarify$View$tasksToHtmlList = F3(
 							_0: _elm_lang$html$Html$text(
 								A2(
 									_elm_lang$core$Basics_ops['++'],
-									' ',
-									A2(_elm_lang$core$Basics_ops['++'], task.title, ' '))),
+									'   Title: ',
+									A2(_elm_lang$core$Basics_ops['++'], task.title, '    '))),
 							_1: {
 								ctor: '::',
-								_0: A2(_mica5$clarify$View$lifeGoalSelector, model.life_goals, task),
+								_0: _elm_lang$html$Html$text(
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										'Current Life Goal: ',
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											_elm_lang$core$Basics$toString(task.lifeGoalID),
+											' '))),
 								_1: {
 									ctor: '::',
-									_0: _mica5$clarify$View$estimatedMinutesSelector(task),
+									_0: A2(_mica5$clarify$View$lifeGoalSelector2, model.life_goals, task),
 									_1: {
 										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$br,
-											{ctor: '[]'},
-											{ctor: '[]'}),
-										_1: {ctor: '[]'}
+										_0: _mica5$clarify$View$estimatedMinutesSelector(task),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$br,
+												{ctor: '[]'},
+												{ctor: '[]'}),
+											_1: {ctor: '[]'}
+										}
 									}
 								}
 							}
@@ -8790,6 +8837,42 @@ var _mica5$clarify$View$tasksToHtmlList = F3(
 			},
 			tasks);
 	});
+var _mica5$clarify$View$lifeGoalSelector = function (life_goals) {
+	return A2(
+		_elm_lang$html$Html$select,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Events$onInput(
+				_mica5$clarify$Msg$UpdateTaskRegister('lifeGoal')),
+			_1: {ctor: '[]'}
+		},
+		A2(
+			_elm_lang$core$List$map,
+			function (lifeGoal) {
+				return A2(
+					_elm_lang$html$Html$option,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$value(
+							_elm_lang$core$Basics$toString(lifeGoal.id)),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(lifeGoal.title),
+						_1: {ctor: '[]'}
+					});
+			},
+			{
+				ctor: '::',
+				_0: {
+					title: 'Life Goal Selection',
+					priorities: {ctor: '[]'},
+					id: 0
+				},
+				_1: life_goals
+			}));
+};
 var _mica5$clarify$View$noStyle = _elm_lang$html$Html_Attributes$style(
 	{ctor: '[]'});
 var _mica5$clarify$View$redFont = _elm_lang$html$Html_Attributes$style(
@@ -9072,7 +9155,7 @@ var _mica5$clarify$View$taskView = function (model) {
 											_0: _elm_lang$html$Html$text('Life Goal: '),
 											_1: {
 												ctor: '::',
-												_0: A2(_mica5$clarify$View$lifeGoalSelector, model.life_goals, 0),
+												_0: _mica5$clarify$View$lifeGoalSelector(model.life_goals),
 												_1: {
 													ctor: '::',
 													_0: A2(
