@@ -8713,6 +8713,57 @@ var _mica5$clarify$View$estimatedMinutesSelector = function (task) {
 		},
 		{ctor: '[]'});
 };
+var _mica5$clarify$View$lifeGoalSelector = function (life_goals) {
+	return A2(
+		_elm_lang$html$Html$select,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Events$onInput(
+				_mica5$clarify$Msg$UpdateTaskRegister('lifeGoal')),
+			_1: {ctor: '[]'}
+		},
+		A2(
+			_elm_lang$core$List$map,
+			function (lifeGoal) {
+				return A2(
+					_elm_lang$html$Html$option,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$value(
+							_elm_lang$core$Basics$toString(lifeGoal.id)),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(lifeGoal.title),
+						_1: {ctor: '[]'}
+					});
+			},
+			{
+				ctor: '::',
+				_0: {
+					title: 'Life Goal Selection',
+					priorities: {ctor: '[]'},
+					id: 0
+				},
+				_1: life_goals
+			}));
+};
+var _mica5$clarify$View$getLifeGoal = F2(
+	function (goals, goalId) {
+		var _p0 = _elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$filter,
+				function (goal) {
+					return _elm_lang$core$Native_Utils.eq(goal.id, goalId);
+				},
+				goals));
+		if (_p0.ctor === 'Just') {
+			return _p0._0.title;
+		} else {
+			return '';
+		}
+	});
 var _mica5$clarify$View$lifeGoalSelector2 = F2(
 	function (life_goals, task) {
 		return A2(
@@ -8743,7 +8794,7 @@ var _mica5$clarify$View$lifeGoalSelector2 = F2(
 				{
 					ctor: '::',
 					_0: {
-						title: 'Life Goal Selection',
+						title: A2(_mica5$clarify$View$getLifeGoal, life_goals, task.lifeGoalID),
 						priorities: {ctor: '[]'},
 						id: 0
 					},
@@ -8806,28 +8857,17 @@ var _mica5$clarify$View$tasksToHtmlList = F3(
 									A2(_elm_lang$core$Basics_ops['++'], task.title, '    '))),
 							_1: {
 								ctor: '::',
-								_0: _elm_lang$html$Html$text(
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										'Current Life Goal: ',
-										A2(
-											_elm_lang$core$Basics_ops['++'],
-											_elm_lang$core$Basics$toString(task.lifeGoalID),
-											' '))),
+								_0: A2(_mica5$clarify$View$lifeGoalSelector2, model.life_goals, task),
 								_1: {
 									ctor: '::',
-									_0: A2(_mica5$clarify$View$lifeGoalSelector2, model.life_goals, task),
+									_0: _mica5$clarify$View$estimatedMinutesSelector(task),
 									_1: {
 										ctor: '::',
-										_0: _mica5$clarify$View$estimatedMinutesSelector(task),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$br,
-												{ctor: '[]'},
-												{ctor: '[]'}),
-											_1: {ctor: '[]'}
-										}
+										_0: A2(
+											_elm_lang$html$Html$br,
+											{ctor: '[]'},
+											{ctor: '[]'}),
+										_1: {ctor: '[]'}
 									}
 								}
 							}
@@ -8837,42 +8877,6 @@ var _mica5$clarify$View$tasksToHtmlList = F3(
 			},
 			tasks);
 	});
-var _mica5$clarify$View$lifeGoalSelector = function (life_goals) {
-	return A2(
-		_elm_lang$html$Html$select,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Events$onInput(
-				_mica5$clarify$Msg$UpdateTaskRegister('lifeGoal')),
-			_1: {ctor: '[]'}
-		},
-		A2(
-			_elm_lang$core$List$map,
-			function (lifeGoal) {
-				return A2(
-					_elm_lang$html$Html$option,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$value(
-							_elm_lang$core$Basics$toString(lifeGoal.id)),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(lifeGoal.title),
-						_1: {ctor: '[]'}
-					});
-			},
-			{
-				ctor: '::',
-				_0: {
-					title: 'Life Goal Selection',
-					priorities: {ctor: '[]'},
-					id: 0
-				},
-				_1: life_goals
-			}));
-};
 var _mica5$clarify$View$noStyle = _elm_lang$html$Html_Attributes$style(
 	{ctor: '[]'});
 var _mica5$clarify$View$redFont = _elm_lang$html$Html_Attributes$style(
@@ -9410,8 +9414,8 @@ var _mica5$clarify$View$lifeGoalsView = function (model) {
 			}));
 };
 var _mica5$clarify$View$currentView = function (model) {
-	var _p0 = model.state;
-	switch (_p0) {
+	var _p1 = model.state;
+	switch (_p1) {
 		case 'TodayState':
 			return _mica5$clarify$View$todayView(model);
 		case 'TaskState':
