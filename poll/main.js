@@ -8278,11 +8278,8 @@ var _user$project$Poll$indexToLetter = function (index) {
 var _user$project$Poll$clearAnswerButtons = _elm_lang$core$Native_Platform.outgoingPort(
 	'clearAnswerButtons',
 	function (v) {
-		return {state: v.state, question: v.question, questionerChoice1: v.questionerChoice1, questionerChoice2: v.questionerChoice2, questionerChoice3: v.questionerChoice3, questionerChoice4: v.questionerChoice4, answerIndex: v.answerIndex, tempChosen: v.tempChosen, answerChoice1: v.answerChoice1, answerChoice2: v.answerChoice2, answerChoice3: v.answerChoice3, answerChoice4: v.answerChoice4};
+		return v;
 	});
-var _user$project$Poll$subscriptions = function (model) {
-	return _user$project$Poll$clearAnswerButtons(model);
-};
 var _user$project$Poll$Model = function (a) {
 	return function (b) {
 		return function (c) {
@@ -8308,7 +8305,10 @@ var _user$project$Poll$Model = function (a) {
 		};
 	};
 };
-var _user$project$Poll$model = _user$project$Poll$Model('Questioning')('Your question will show here.')('A goes here.')('B goes here.')('C goes here.')('D goes here.')(4)(0)(0)(0)(0)(0);
+var _user$project$Poll$Results = {ctor: 'Results'};
+var _user$project$Poll$Answering = {ctor: 'Answering'};
+var _user$project$Poll$Questioning = {ctor: 'Questioning'};
+var _user$project$Poll$model = _user$project$Poll$Model(_user$project$Poll$Questioning)('Your question will show here.')('A goes here.')('B goes here.')('C goes here.')('D goes here.')(4)(0)(0)(0)(0)(0);
 var _user$project$Poll$init = A2(
 	_elm_lang$core$Platform_Cmd_ops['!'],
 	_user$project$Poll$model,
@@ -8319,14 +8319,14 @@ var _user$project$Poll$update = F2(
 		switch (_p1.ctor) {
 			case 'Submit':
 				var _p2 = model.state;
-				switch (_p2) {
+				switch (_p2.ctor) {
 					case 'Questioning':
 						return A2(
 							_elm_lang$core$Platform_Cmd_ops['!'],
 							_elm_lang$core$Native_Utils.update(
 								model,
 								{
-									state: 'Answering',
+									state: _user$project$Poll$Answering,
 									tempChosen: A2(_elm_lang$core$Basics_ops['%'], model.answerIndex, 4) + 1
 								}),
 							{ctor: '[]'});
@@ -8335,17 +8335,12 @@ var _user$project$Poll$update = F2(
 							_elm_lang$core$Platform_Cmd_ops['!'],
 							_elm_lang$core$Native_Utils.update(
 								model,
-								{state: 'Results'}),
-							{ctor: '[]'});
-					case 'Results':
-						return A2(
-							_elm_lang$core$Platform_Cmd_ops['!'],
-							_user$project$Poll$Model('Questioning')('Your question will show here.')('A goes here.')('B goes here.')('C goes here.')('D goes here.')(1)(0)(0)(0)(0)(0),
+								{state: _user$project$Poll$Results}),
 							{ctor: '[]'});
 					default:
 						return A2(
 							_elm_lang$core$Platform_Cmd_ops['!'],
-							model,
+							_user$project$Poll$Model(_user$project$Poll$Questioning)('Your question will show here.')('A goes here.')('B goes here.')('C goes here.')('D goes here.')(1)(0)(0)(0)(0)(0),
 							{ctor: '[]'});
 				}
 			case 'SetQuestion':
@@ -8427,7 +8422,7 @@ var _user$project$Poll$update = F2(
 				return {
 					ctor: '_Tuple2',
 					_0: newModel,
-					_1: _user$project$Poll$clearAnswerButtons(newModel)
+					_1: _user$project$Poll$clearAnswerButtons(true)
 				};
 		}
 	});
@@ -9140,13 +9135,11 @@ var _user$project$Poll$resultView = function (model) {
 };
 var _user$project$Poll$view = function (model) {
 	var _p6 = model.state;
-	switch (_p6) {
+	switch (_p6.ctor) {
 		case 'Questioning':
 			return _user$project$Poll$questionView(model);
 		case 'Answering':
 			return _user$project$Poll$answerView(model);
-		case 'Results':
-			return _user$project$Poll$resultView(model);
 		default:
 			return _user$project$Poll$resultView(model);
 	}
