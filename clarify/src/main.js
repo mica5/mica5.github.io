@@ -8488,6 +8488,14 @@ var _mica5$clarify$Msg$TaskState = {ctor: 'TaskState'};
 var _mica5$clarify$Msg$CreateState = {ctor: 'CreateState'};
 var _mica5$clarify$Msg$TodayState = {ctor: 'TodayState'};
 
+var _mica5$clarify$Update$resetFilter = function (settings) {
+	return A2(
+		_elm_lang$core$List$map,
+		function (s) {
+			return A2(_elm_lang$core$String$startsWith, 'filter ', s) ? 'filter ' : s;
+		},
+		settings);
+};
 var _mica5$clarify$Update$sortSettings = {
 	ctor: '::',
 	_0: 'Life Goal',
@@ -8817,7 +8825,8 @@ var _mica5$clarify$Update$update = F2(
 						model,
 						{
 							debug: _elm_lang$core$Basics$toString(msg),
-							state: _elm_lang$core$Basics$toString(msg)
+							state: _elm_lang$core$Basics$toString(msg),
+							settings: _mica5$clarify$Update$resetFilter(model.settings)
 						}),
 					{ctor: '[]'});
 		}
@@ -9927,25 +9936,25 @@ var _mica5$clarify$View$lifeGoalElement = function (lifeGoal) {
 		},
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html$text(lifeGoal.title),
+			_0: A2(
+				_elm_lang$html$Html$button,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onClick(
+						_mica5$clarify$Msg$DeleteLifeGoal(lifeGoal.id)),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Delete'),
+					_1: {ctor: '[]'}
+				}),
 			_1: {
 				ctor: '::',
 				_0: _elm_lang$html$Html$text(' '),
 				_1: {
 					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$button,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Events$onClick(
-								_mica5$clarify$Msg$DeleteLifeGoal(lifeGoal.id)),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('Delete'),
-							_1: {ctor: '[]'}
-						}),
+					_0: _elm_lang$html$Html$text(lifeGoal.title),
 					_1: {ctor: '[]'}
 				}
 			}
@@ -10234,6 +10243,7 @@ var _mica5$clarify$View$todayView = function (model) {
 					return A2(_elm_lang$core$List$member, t.taskID, model.todayTaskIds);
 				},
 				model.tasks);
+			var filteredTodayTasks = A3(_mica5$clarify$View$filterTasks, todayTasks, model, model.settings);
 			var at_least_one_task = _elm_lang$core$Native_Utils.cmp(
 				_elm_lang$core$List$length(model.todayTaskIds),
 				0) > 0;
@@ -10247,7 +10257,7 @@ var _mica5$clarify$View$todayView = function (model) {
 						_0: _elm_lang$html$Html$text('Total Estimated Minutes for Today\'s Tasks: '),
 						_1: {
 							ctor: '::',
-							_0: _mica5$clarify$View$tasksEstimatedMinutesSumText(todayTasks),
+							_0: _mica5$clarify$View$tasksEstimatedMinutesSumText(filteredTodayTasks),
 							_1: {
 								ctor: '::',
 								_0: _elm_lang$html$Html$text(' ('),
@@ -10258,7 +10268,7 @@ var _mica5$clarify$View$todayView = function (model) {
 											_myrho$elm_round$Round$round,
 											2,
 											_elm_lang$core$Basics$toFloat(
-												_mica5$clarify$View$tasksEstimatedMinutesSum(todayTasks)) / 60)),
+												_mica5$clarify$View$tasksEstimatedMinutesSum(filteredTodayTasks)) / 60)),
 									_1: {
 										ctor: '::',
 										_0: _elm_lang$html$Html$text(' hours)'),
@@ -10270,8 +10280,12 @@ var _mica5$clarify$View$todayView = function (model) {
 					}),
 				_1: {
 					ctor: '::',
-					_0: A2(_mica5$clarify$View$taskListToHtmlTable, model, todayTasks),
-					_1: {ctor: '[]'}
+					_0: _mica5$clarify$View$taskFilterTextInput,
+					_1: {
+						ctor: '::',
+						_0: A2(_mica5$clarify$View$taskListToHtmlTable, model, filteredTodayTasks),
+						_1: {ctor: '[]'}
+					}
 				}
 			} : {
 				ctor: '::',
