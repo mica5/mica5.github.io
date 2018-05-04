@@ -5730,6 +5730,126 @@ var _elm_lang$core$Json_Decode$bool = _elm_lang$core$Native_Json.decodePrimitive
 var _elm_lang$core$Json_Decode$string = _elm_lang$core$Native_Json.decodePrimitive('string');
 var _elm_lang$core$Json_Decode$Decoder = {ctor: 'Decoder'};
 
+//import Maybe, Native.List //
+
+var _elm_lang$core$Native_Regex = function() {
+
+function escape(str)
+{
+	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+function caseInsensitive(re)
+{
+	return new RegExp(re.source, 'gi');
+}
+function regex(raw)
+{
+	return new RegExp(raw, 'g');
+}
+
+function contains(re, string)
+{
+	return string.match(re) !== null;
+}
+
+function find(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var out = [];
+	var number = 0;
+	var string = str;
+	var lastIndex = re.lastIndex;
+	var prevLastIndex = -1;
+	var result;
+	while (number++ < n && (result = re.exec(string)))
+	{
+		if (prevLastIndex === re.lastIndex) break;
+		var i = result.length - 1;
+		var subs = new Array(i);
+		while (i > 0)
+		{
+			var submatch = result[i];
+			subs[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		out.push({
+			match: result[0],
+			submatches: _elm_lang$core$Native_List.fromArray(subs),
+			index: result.index,
+			number: number
+		});
+		prevLastIndex = re.lastIndex;
+	}
+	re.lastIndex = lastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+function replace(n, re, replacer, string)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var count = 0;
+	function jsReplacer(match)
+	{
+		if (count++ >= n)
+		{
+			return match;
+		}
+		var i = arguments.length - 3;
+		var submatches = new Array(i);
+		while (i > 0)
+		{
+			var submatch = arguments[i];
+			submatches[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		return replacer({
+			match: match,
+			submatches: _elm_lang$core$Native_List.fromArray(submatches),
+			index: arguments[arguments.length - 2],
+			number: count
+		});
+	}
+	return string.replace(re, jsReplacer);
+}
+
+function split(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	if (n === Infinity)
+	{
+		return _elm_lang$core$Native_List.fromArray(str.split(re));
+	}
+	var string = str;
+	var result;
+	var out = [];
+	var start = re.lastIndex;
+	var restoreLastIndex = re.lastIndex;
+	while (n--)
+	{
+		if (!(result = re.exec(string))) break;
+		out.push(string.slice(start, result.index));
+		start = re.lastIndex;
+	}
+	out.push(string.slice(start));
+	re.lastIndex = restoreLastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+return {
+	regex: regex,
+	caseInsensitive: caseInsensitive,
+	escape: escape,
+
+	contains: F2(contains),
+	find: F3(find),
+	replace: F4(replace),
+	split: F3(split)
+};
+
+}();
+
 var _elm_lang$core$Tuple$mapSecond = F2(
 	function (func, _p0) {
 		var _p1 = _p0;
@@ -5756,6 +5876,23 @@ var _elm_lang$core$Tuple$first = function (_p6) {
 	var _p7 = _p6;
 	return _p7._0;
 };
+
+var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
+var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
+var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
+var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
+var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
+var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
+var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
+var _elm_lang$core$Regex$Match = F4(
+	function (a, b, c, d) {
+		return {match: a, submatches: b, index: c, number: d};
+	});
+var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
+var _elm_lang$core$Regex$AtMost = function (a) {
+	return {ctor: 'AtMost', _0: a};
+};
+var _elm_lang$core$Regex$All = {ctor: 'All'};
 
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrap;
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrapWithFlags;
@@ -8303,6 +8440,9 @@ var _mica5$clarify$Model$Model = function (a) {
 	};
 };
 
+var _mica5$clarify$Msg$FilterTasks = function (a) {
+	return {ctor: 'FilterTasks', _0: a};
+};
 var _mica5$clarify$Msg$ChangeTaskSorting = function (a) {
 	return {ctor: 'ChangeTaskSorting', _0: a};
 };
@@ -8365,6 +8505,25 @@ var _mica5$clarify$Update$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
 		switch (_p0.ctor) {
+			case 'FilterTasks':
+				var settingsWithoutFilter = A2(
+					_elm_lang$core$List$filter,
+					function (s) {
+						return !A2(_elm_lang$core$String$startsWith, 'filter ', s);
+					},
+					model.settings);
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							settings: {
+								ctor: '::',
+								_0: A2(_elm_lang$core$Basics_ops['++'], 'filter ', _p0._0),
+								_1: settingsWithoutFilter
+							}
+						}),
+					{ctor: '[]'});
 			case 'ChangeTaskSorting':
 				var cleanedSettings = A2(
 					_elm_lang$core$List$filter,
@@ -9004,6 +9163,85 @@ var _mica5$clarify$View$tasksEstimatedMinutesSumText = function (tasks) {
 		_elm_lang$core$Basics$toString(
 			_mica5$clarify$View$tasksEstimatedMinutesSum(tasks)));
 };
+var _mica5$clarify$View$getFullTaskText = F2(
+	function (model, task) {
+		var lifeGoalID = task.lifeGoalID;
+		var lifeGoalStringList = A2(
+			_elm_lang$core$List$filter,
+			function (lg) {
+				return _elm_lang$core$Native_Utils.eq(lg.id, lifeGoalID);
+			},
+			model.life_goals);
+		var lifeGoal = function () {
+			var _p0 = _elm_lang$core$List$head(lifeGoalStringList);
+			if (_p0.ctor === 'Nothing') {
+				return A3(
+					_mica5$clarify$Model$LifeGoal,
+					'',
+					{ctor: '[]'},
+					-1);
+			} else {
+				return _p0._0;
+			}
+		}();
+		var lifeGoalString = lifeGoal.title;
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			lifeGoalString,
+			A2(_elm_lang$core$Basics_ops['++'], ' ', task.title));
+	});
+var _mica5$clarify$View$taskMatchesFilters = F3(
+	function (task, model, filterParts) {
+		var fullTaskText = A2(_mica5$clarify$View$getFullTaskText, model, task);
+		var fp = A2(
+			_elm_lang$core$List$map,
+			function (p) {
+				return A2(
+					_elm_lang$core$Regex$contains,
+					_elm_lang$core$Regex$regex(p),
+					fullTaskText);
+			},
+			filterParts);
+		return A2(
+			_elm_lang$core$List$all,
+			function (x) {
+				return x;
+			},
+			fp);
+	});
+var _mica5$clarify$View$filterTasks = F3(
+	function (tasks, model, settings) {
+		var settingsThatStartWithFilter = A2(
+			_elm_lang$core$List$filter,
+			function (s) {
+				return A2(_elm_lang$core$String$startsWith, 'filter ', s);
+			},
+			settings);
+		var filterFilterString = function () {
+			var _p1 = _elm_lang$core$List$head(settingsThatStartWithFilter);
+			if (_p1.ctor === 'Nothing') {
+				return '';
+			} else {
+				return _p1._0;
+			}
+		}();
+		var fullFilterText = A2(_elm_lang$core$String$dropLeft, 7, filterFilterString);
+		var filterParts = A2(_elm_lang$core$String$split, ' ', fullFilterText);
+		return A2(
+			_elm_lang$core$List$filter,
+			function (t) {
+				return A3(_mica5$clarify$View$taskMatchesFilters, t, model, filterParts);
+			},
+			tasks);
+	});
+var _mica5$clarify$View$taskFilterTextInput = A2(
+	_elm_lang$html$Html$input,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Events$onInput(_mica5$clarify$Msg$FilterTasks),
+		_1: {ctor: '[]'}
+	},
+	{ctor: '[]'});
 var _mica5$clarify$View$sortTasks = F2(
 	function (model, tasks) {
 		return A2(_elm_lang$core$List$member, 'Life Goal', model.settings) ? A2(
@@ -9037,8 +9275,8 @@ var _mica5$clarify$View$solidBlackBorderStyle = _elm_lang$html$Html_Attributes$s
 var _mica5$clarify$View$taskTodayMatchesViewState = F2(
 	function (model, task) {
 		if (A2(_elm_lang$core$List$member, 'Hide today tasks from tasks page', model.settings)) {
-			var _p0 = model.state;
-			if (_p0 === 'TodayState') {
+			var _p2 = model.state;
+			if (_p2 === 'TodayState') {
 				return A2(_elm_lang$core$List$member, task.taskID, model.todayTaskIds);
 			} else {
 				return !A2(_elm_lang$core$List$member, task.taskID, model.todayTaskIds);
@@ -9424,15 +9662,15 @@ var _mica5$clarify$View$lifeGoalSelectorForCreating = function (life_goals) {
 };
 var _mica5$clarify$View$getLifeGoal = F2(
 	function (goals, goalId) {
-		var _p1 = _elm_lang$core$List$head(
+		var _p3 = _elm_lang$core$List$head(
 			A2(
 				_elm_lang$core$List$filter,
 				function (goal) {
 					return _elm_lang$core$Native_Utils.eq(goal.id, goalId);
 				},
 				goals));
-		if (_p1.ctor === 'Just') {
-			return _p1._0;
+		if (_p3.ctor === 'Just') {
+			return _p3._0;
 		} else {
 			return {
 				title: 'Nothing',
@@ -9756,7 +9994,8 @@ var _mica5$clarify$View$taskView = function (model) {
 			return A2(_mica5$clarify$View$taskTodayMatchesViewState, model, t);
 		},
 		model.tasks);
-	var sortedTaskViewTasks = A2(_mica5$clarify$View$sortTasks, model, taskViewTasks);
+	var filteredTaskViewTasks = A3(_mica5$clarify$View$filterTasks, taskViewTasks, model, model.settings);
+	var sortedTaskViewTasks = A2(_mica5$clarify$View$sortTasks, model, filteredTaskViewTasks);
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -9771,40 +10010,58 @@ var _mica5$clarify$View$taskView = function (model) {
 				_0: _mica5$clarify$View$sortBySelectorButtons(model),
 				_1: {
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('Total Estimated Minutes for All Displayed Tasks: '),
+					_0: A2(
+						_elm_lang$html$Html$br,
+						{ctor: '[]'},
+						{ctor: '[]'}),
 					_1: {
 						ctor: '::',
-						_0: _mica5$clarify$View$tasksEstimatedMinutesSumText(sortedTaskViewTasks),
+						_0: _mica5$clarify$View$taskFilterTextInput,
 						_1: {
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									' (',
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										A2(
-											_myrho$elm_round$Round$round,
-											2,
-											_elm_lang$core$Basics$toFloat(
-												_mica5$clarify$View$tasksEstimatedMinutesSum(sortedTaskViewTasks)) / 60),
-										' hours)'))),
+							_0: A2(
+								_elm_lang$html$Html$br,
+								{ctor: '[]'},
+								{ctor: '[]'}),
 							_1: {
 								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$br,
-									{ctor: '[]'},
-									{ctor: '[]'}),
+								_0: _elm_lang$html$Html$text('Total Estimated Minutes for All Displayed Tasks: '),
 								_1: {
 									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$br,
-										{ctor: '[]'},
-										{ctor: '[]'}),
+									_0: _mica5$clarify$View$tasksEstimatedMinutesSumText(sortedTaskViewTasks),
 									_1: {
 										ctor: '::',
-										_0: A2(_mica5$clarify$View$taskListToHtmlTable, model, sortedTaskViewTasks),
-										_1: {ctor: '[]'}
+										_0: _elm_lang$html$Html$text(
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												' (',
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													A2(
+														_myrho$elm_round$Round$round,
+														2,
+														_elm_lang$core$Basics$toFloat(
+															_mica5$clarify$View$tasksEstimatedMinutesSum(sortedTaskViewTasks)) / 60),
+													' hours)'))),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$br,
+												{ctor: '[]'},
+												{ctor: '[]'}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$br,
+													{ctor: '[]'},
+													{ctor: '[]'}),
+												_1: {
+													ctor: '::',
+													_0: A2(_mica5$clarify$View$taskListToHtmlTable, model, sortedTaskViewTasks),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
 									}
 								}
 							}
@@ -10143,8 +10400,8 @@ var _mica5$clarify$View$lifeGoalsView = function (model) {
 			}));
 };
 var _mica5$clarify$View$currentView = function (model) {
-	var _p2 = model.state;
-	switch (_p2) {
+	var _p4 = model.state;
+	switch (_p4) {
 		case 'TodayState':
 			return _mica5$clarify$View$todayView(model);
 		case 'TaskState':
