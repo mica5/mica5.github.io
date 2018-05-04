@@ -8280,6 +8280,11 @@ var _user$project$Poll$clearAnswerButtons = _elm_lang$core$Native_Platform.outgo
 	function (v) {
 		return v;
 	});
+var _user$project$Poll$focusOnQuestionText = _elm_lang$core$Native_Platform.outgoingPort(
+	'focusOnQuestionText',
+	function (v) {
+		return v;
+	});
 var _user$project$Poll$Model = function (a) {
 	return function (b) {
 		return function (c) {
@@ -8306,13 +8311,17 @@ var _user$project$Poll$Model = function (a) {
 	};
 };
 var _user$project$Poll$Results = {ctor: 'Results'};
-var _user$project$Poll$Answering = {ctor: 'Answering'};
+var _user$project$Poll$SubmittingVotes = {ctor: 'SubmittingVotes'};
 var _user$project$Poll$Questioning = {ctor: 'Questioning'};
 var _user$project$Poll$model = _user$project$Poll$Model(_user$project$Poll$Questioning)('Your question will show here.')('A goes here.')('B goes here.')('C goes here.')('D goes here.')(4)(0)(0)(0)(0)(0);
 var _user$project$Poll$init = A2(
 	_elm_lang$core$Platform_Cmd_ops['!'],
 	_user$project$Poll$model,
-	{ctor: '[]'});
+	{
+		ctor: '::',
+		_0: _user$project$Poll$focusOnQuestionText(true),
+		_1: {ctor: '[]'}
+	});
 var _user$project$Poll$update = F2(
 	function (msg, model) {
 		var _p1 = msg;
@@ -8326,11 +8335,15 @@ var _user$project$Poll$update = F2(
 							_elm_lang$core$Native_Utils.update(
 								model,
 								{
-									state: _user$project$Poll$Answering,
+									state: _user$project$Poll$SubmittingVotes,
 									tempChosen: A2(_elm_lang$core$Basics_ops['%'], model.answerIndex, 4) + 1
 								}),
-							{ctor: '[]'});
-					case 'Answering':
+							{
+								ctor: '::',
+								_0: _user$project$Poll$focusOnQuestionText(true),
+								_1: {ctor: '[]'}
+							});
+					case 'SubmittingVotes':
 						return A2(
 							_elm_lang$core$Platform_Cmd_ops['!'],
 							_elm_lang$core$Native_Utils.update(
@@ -8338,10 +8351,16 @@ var _user$project$Poll$update = F2(
 								{state: _user$project$Poll$Results}),
 							{ctor: '[]'});
 					default:
-						return A2(
-							_elm_lang$core$Platform_Cmd_ops['!'],
-							_user$project$Poll$Model(_user$project$Poll$Questioning)('Your question will show here.')('A goes here.')('B goes here.')('C goes here.')('D goes here.')(1)(0)(0)(0)(0)(0),
-							{ctor: '[]'});
+						return {
+							ctor: '_Tuple2',
+							_0: _user$project$Poll$Model(_user$project$Poll$Questioning)('Your question will show here.')('A goes here.')('B goes here.')('C goes here.')('D goes here.')(1)(0)(0)(0)(0)(0),
+							_1: _elm_lang$core$Platform_Cmd$batch(
+								{
+									ctor: '::',
+									_0: _user$project$Poll$focusOnQuestionText(true),
+									_1: {ctor: '[]'}
+								})
+						};
 				}
 			case 'SetQuestion':
 				return A2(
@@ -8430,8 +8449,8 @@ var _user$project$Poll$Answer = {ctor: 'Answer'};
 var _user$project$Poll$SetChosenAnswer = function (a) {
 	return {ctor: 'SetChosenAnswer', _0: a};
 };
-var _user$project$Poll$answerRadioButton = F2(
-	function (textValue, newAnswerIndex) {
+var _user$project$Poll$answerRadioButton = F3(
+	function (textValue, newAnswerIndex, idString) {
 		return A2(
 			_elm_lang$html$Html$div,
 			{ctor: '[]'},
@@ -8464,12 +8483,16 @@ var _user$project$Poll$answerRadioButton = F2(
 										_0: _elm_lang$html$Html_Attributes$class('answerButton'),
 										_1: {
 											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$checked(true),
+											_0: _elm_lang$html$Html_Attributes$checked(false),
 											_1: {
 												ctor: '::',
 												_0: _elm_lang$html$Html_Events$onClick(
 													_user$project$Poll$SetChosenAnswer(newAnswerIndex)),
-												_1: {ctor: '[]'}
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$id(idString),
+													_1: {ctor: '[]'}
+												}
 											}
 										}
 									}
@@ -8523,7 +8546,7 @@ var _user$project$Poll$question = F2(
 									_0: _elm_lang$html$Html_Attributes$name('question'),
 									_1: {
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$checked(true),
+										_0: _elm_lang$html$Html_Attributes$checked(false),
 										_1: {
 											ctor: '::',
 											_0: _elm_lang$html$Html_Events$onClick(
@@ -8596,7 +8619,11 @@ var _user$project$Poll$questionView = function (model) {
 											_1: {
 												ctor: '::',
 												_0: _elm_lang$html$Html_Events$onInput(_user$project$Poll$SetQuestion),
-												_1: {ctor: '[]'}
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$id('questionText'),
+													_1: {ctor: '[]'}
+												}
 											}
 										},
 										{ctor: '[]'}),
@@ -8798,7 +8825,7 @@ var _user$project$Poll$questionView = function (model) {
 			}
 		});
 };
-var _user$project$Poll$answerView = function (model) {
+var _user$project$Poll$submitVotesView = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{ctor: '[]'},
@@ -8831,10 +8858,11 @@ var _user$project$Poll$answerView = function (model) {
 								{ctor: '[]'}),
 							_1: {
 								ctor: '::',
-								_0: A2(
+								_0: A3(
 									_user$project$Poll$answerRadioButton,
 									A2(_elm_lang$core$Basics_ops['++'], 'A ) ', model.questionerChoice1),
-									1),
+									1,
+									'A'),
 								_1: {
 									ctor: '::',
 									_0: A2(
@@ -8843,10 +8871,11 @@ var _user$project$Poll$answerView = function (model) {
 										{ctor: '[]'}),
 									_1: {
 										ctor: '::',
-										_0: A2(
+										_0: A3(
 											_user$project$Poll$answerRadioButton,
 											A2(_elm_lang$core$Basics_ops['++'], 'B ) ', model.questionerChoice2),
-											2),
+											2,
+											'B'),
 										_1: {
 											ctor: '::',
 											_0: A2(
@@ -8855,10 +8884,11 @@ var _user$project$Poll$answerView = function (model) {
 												{ctor: '[]'}),
 											_1: {
 												ctor: '::',
-												_0: A2(
+												_0: A3(
 													_user$project$Poll$answerRadioButton,
 													A2(_elm_lang$core$Basics_ops['++'], 'C ) ', model.questionerChoice3),
-													3),
+													3,
+													'C'),
 												_1: {
 													ctor: '::',
 													_0: A2(
@@ -8867,10 +8897,11 @@ var _user$project$Poll$answerView = function (model) {
 														{ctor: '[]'}),
 													_1: {
 														ctor: '::',
-														_0: A2(
+														_0: A3(
 															_user$project$Poll$answerRadioButton,
 															A2(_elm_lang$core$Basics_ops['++'], 'D ) ', model.questionerChoice4),
-															4),
+															4,
+															'D'),
 														_1: {
 															ctor: '::',
 															_0: A2(
@@ -8884,7 +8915,11 @@ var _user$project$Poll$answerView = function (model) {
 																	{
 																		ctor: '::',
 																		_0: _elm_lang$html$Html_Events$onClick(_user$project$Poll$Answer),
-																		_1: {ctor: '[]'}
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Attributes$id('voteButton'),
+																			_1: {ctor: '[]'}
+																		}
 																	},
 																	{
 																		ctor: '::',
@@ -8930,6 +8965,19 @@ var _user$project$Poll$answerView = function (model) {
 		});
 };
 var _user$project$Poll$resultView = function (model) {
+	var totalVotes = _elm_lang$core$Basics$toFloat(((model.answerChoice1 + model.answerChoice2) + model.answerChoice3) + model.answerChoice4);
+	var proportionAnswerChoice1 = _elm_lang$core$Basics$toString(
+		_elm_lang$core$Basics$round(
+			(_elm_lang$core$Basics$toFloat(model.answerChoice1) / totalVotes) * 100));
+	var proportionAnswerChoice2 = _elm_lang$core$Basics$toString(
+		_elm_lang$core$Basics$round(
+			(_elm_lang$core$Basics$toFloat(model.answerChoice2) / totalVotes) * 100));
+	var proportionAnswerChoice3 = _elm_lang$core$Basics$toString(
+		_elm_lang$core$Basics$round(
+			(_elm_lang$core$Basics$toFloat(model.answerChoice3) / totalVotes) * 100));
+	var proportionAnswerChoice4 = _elm_lang$core$Basics$toString(
+		_elm_lang$core$Basics$round(
+			(_elm_lang$core$Basics$toFloat(model.answerChoice4) / totalVotes) * 100));
 	return A2(
 		_elm_lang$html$Html$div,
 		{ctor: '[]'},
@@ -8965,7 +9013,13 @@ var _user$project$Poll$resultView = function (model) {
 										A2(
 											_elm_lang$core$Basics_ops['++'],
 											'Votes for A: ',
-											_elm_lang$core$Basics$toString(model.answerChoice1))),
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												_elm_lang$core$Basics$toString(model.answerChoice1),
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													' (',
+													A2(_elm_lang$core$Basics_ops['++'], proportionAnswerChoice1, '%)'))))),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
@@ -8979,7 +9033,13 @@ var _user$project$Poll$resultView = function (model) {
 											A2(
 												_elm_lang$core$Basics_ops['++'],
 												'Votes for B: ',
-												_elm_lang$core$Basics$toString(model.answerChoice2))),
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													_elm_lang$core$Basics$toString(model.answerChoice2),
+													A2(
+														_elm_lang$core$Basics_ops['++'],
+														' (',
+														A2(_elm_lang$core$Basics_ops['++'], proportionAnswerChoice2, '%)'))))),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
@@ -8993,7 +9053,13 @@ var _user$project$Poll$resultView = function (model) {
 												A2(
 													_elm_lang$core$Basics_ops['++'],
 													'Votes for C: ',
-													_elm_lang$core$Basics$toString(model.answerChoice3))),
+													A2(
+														_elm_lang$core$Basics_ops['++'],
+														_elm_lang$core$Basics$toString(model.answerChoice3),
+														A2(
+															_elm_lang$core$Basics_ops['++'],
+															' (',
+															A2(_elm_lang$core$Basics_ops['++'], proportionAnswerChoice3, '%)'))))),
 											_1: {ctor: '[]'}
 										}),
 									_1: {
@@ -9007,7 +9073,13 @@ var _user$project$Poll$resultView = function (model) {
 													A2(
 														_elm_lang$core$Basics_ops['++'],
 														'Votes for D: ',
-														_elm_lang$core$Basics$toString(model.answerChoice4))),
+														A2(
+															_elm_lang$core$Basics_ops['++'],
+															_elm_lang$core$Basics$toString(model.answerChoice4),
+															A2(
+																_elm_lang$core$Basics_ops['++'],
+																' (',
+																A2(_elm_lang$core$Basics_ops['++'], proportionAnswerChoice4, '%)'))))),
 												_1: {ctor: '[]'}
 											}),
 										_1: {ctor: '[]'}
@@ -9138,8 +9210,8 @@ var _user$project$Poll$view = function (model) {
 	switch (_p6.ctor) {
 		case 'Questioning':
 			return _user$project$Poll$questionView(model);
-		case 'Answering':
-			return _user$project$Poll$answerView(model);
+		case 'SubmittingVotes':
+			return _user$project$Poll$submitVotesView(model);
 		default:
 			return _user$project$Poll$resultView(model);
 	}
