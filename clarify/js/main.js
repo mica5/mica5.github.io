@@ -9355,7 +9355,15 @@ var _mica5$clarify$View$estimatedMinutesSelector = function (task) {
 					ctor: '::',
 					_0: _elm_lang$html$Html_Attributes$value(
 						_elm_lang$core$Basics$toString(task.estimatedMinutes)),
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$min('0'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$max('9999'),
+							_1: {ctor: '[]'}
+						}
+					}
 				}
 			}
 		},
@@ -9396,7 +9404,7 @@ var _mica5$clarify$View$lifeGoalSelectorForEditing = F2(
 				{
 					ctor: '::',
 					_0: {
-						title: 'Nothing',
+						title: 'Choose a life goal',
 						priorities: {ctor: '[]'},
 						id: -10
 					},
@@ -10025,39 +10033,36 @@ var _mica5$clarify$View$taskView = function (model) {
 						{ctor: '[]'}),
 					_1: {
 						ctor: '::',
-						_0: _mica5$clarify$View$taskFilterTextInput,
+						_0: _elm_lang$html$Html$text('Filter Tasks: '),
 						_1: {
 							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$br,
-								{ctor: '[]'},
-								{ctor: '[]'}),
+							_0: _mica5$clarify$View$taskFilterTextInput,
 							_1: {
 								ctor: '::',
-								_0: _elm_lang$html$Html$text('Total Estimated Minutes for All Displayed Tasks: '),
+								_0: A2(
+									_elm_lang$html$Html$br,
+									{ctor: '[]'},
+									{ctor: '[]'}),
 								_1: {
 									ctor: '::',
-									_0: _mica5$clarify$View$tasksEstimatedMinutesSumText(sortedTaskViewTasks),
+									_0: _elm_lang$html$Html$text('Estimated minutes for displayed tasks: '),
 									_1: {
 										ctor: '::',
-										_0: _elm_lang$html$Html$text(
-											A2(
-												_elm_lang$core$Basics_ops['++'],
-												' (',
-												A2(
-													_elm_lang$core$Basics_ops['++'],
-													A2(
-														_myrho$elm_round$Round$round,
-														2,
-														_elm_lang$core$Basics$toFloat(
-															_mica5$clarify$View$tasksEstimatedMinutesSum(sortedTaskViewTasks)) / 60),
-													' hours)'))),
+										_0: _mica5$clarify$View$tasksEstimatedMinutesSumText(sortedTaskViewTasks),
 										_1: {
 											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$br,
-												{ctor: '[]'},
-												{ctor: '[]'}),
+											_0: _elm_lang$html$Html$text(
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													' (',
+													A2(
+														_elm_lang$core$Basics_ops['++'],
+														A2(
+															_myrho$elm_round$Round$round,
+															2,
+															_elm_lang$core$Basics$toFloat(
+																_mica5$clarify$View$tasksEstimatedMinutesSum(sortedTaskViewTasks)) / 60),
+														' hours)'))),
 											_1: {
 												ctor: '::',
 												_0: A2(
@@ -10066,8 +10071,15 @@ var _mica5$clarify$View$taskView = function (model) {
 													{ctor: '[]'}),
 												_1: {
 													ctor: '::',
-													_0: A2(_mica5$clarify$View$taskListToHtmlTable, model, sortedTaskViewTasks),
-													_1: {ctor: '[]'}
+													_0: A2(
+														_elm_lang$html$Html$br,
+														{ctor: '[]'},
+														{ctor: '[]'}),
+													_1: {
+														ctor: '::',
+														_0: A2(_mica5$clarify$View$taskListToHtmlTable, model, sortedTaskViewTasks),
+														_1: {ctor: '[]'}
+													}
 												}
 											}
 										}
@@ -10146,7 +10158,15 @@ var _mica5$clarify$View$taskView = function (model) {
 																			ctor: '::',
 																			_0: _elm_lang$html$Html_Events$onInput(
 																				_mica5$clarify$Msg$UpdateTaskRegister('estimatedMinutes')),
-																			_1: {ctor: '[]'}
+																			_1: {
+																				ctor: '::',
+																				_0: _elm_lang$html$Html_Attributes$min('0'),
+																				_1: {
+																					ctor: '::',
+																					_0: _elm_lang$html$Html_Attributes$max('9999'),
+																					_1: {ctor: '[]'}
+																				}
+																			}
 																		}
 																	},
 																	{ctor: '[]'}),
@@ -10254,7 +10274,7 @@ var _mica5$clarify$View$todayView = function (model) {
 					{ctor: '[]'},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text('Total Estimated Minutes for Today\'s Tasks: '),
+						_0: _elm_lang$html$Html$text('Estimated minutes for displayed tasks: '),
 						_1: {
 							ctor: '::',
 							_0: _mica5$clarify$View$tasksEstimatedMinutesSumText(filteredTodayTasks),
@@ -10280,11 +10300,15 @@ var _mica5$clarify$View$todayView = function (model) {
 					}),
 				_1: {
 					ctor: '::',
-					_0: _mica5$clarify$View$taskFilterTextInput,
+					_0: _elm_lang$html$Html$text('Filter Tasks: '),
 					_1: {
 						ctor: '::',
-						_0: A2(_mica5$clarify$View$taskListToHtmlTable, model, filteredTodayTasks),
-						_1: {ctor: '[]'}
+						_0: _mica5$clarify$View$taskFilterTextInput,
+						_1: {
+							ctor: '::',
+							_0: A2(_mica5$clarify$View$taskListToHtmlTable, model, filteredTodayTasks),
+							_1: {ctor: '[]'}
+						}
 					}
 				}
 			} : {
