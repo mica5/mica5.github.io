@@ -11222,34 +11222,34 @@ var _mica5$clarify$View$taskView = function (model) {
 														_elm_lang$html$Html$button,
 														{
 															ctor: '::',
-															_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$UpOneLevel),
+															_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$TopLevel),
 															_1: {ctor: '[]'}
 														},
 														{
 															ctor: '::',
-															_0: _elm_lang$html$Html$text('Up one level'),
+															_0: _elm_lang$html$Html$text('Top Level'),
 															_1: {ctor: '[]'}
 														}),
 													_1: {
 														ctor: '::',
 														_0: A2(
-															_elm_lang$html$Html$button,
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$TopLevel),
-																_1: {ctor: '[]'}
-															},
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html$text('Top Level'),
-																_1: {ctor: '[]'}
-															}),
+															_elm_lang$html$Html$br,
+															{ctor: '[]'},
+															{ctor: '[]'}),
 														_1: {
 															ctor: '::',
 															_0: A2(
-																_elm_lang$html$Html$br,
-																{ctor: '[]'},
-																{ctor: '[]'}),
+																_elm_lang$html$Html$button,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$UpOneLevel),
+																	_1: {ctor: '[]'}
+																},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text('Up one level'),
+																	_1: {ctor: '[]'}
+																}),
 															_1: {
 																ctor: '::',
 																_0: A2(
@@ -11258,8 +11258,15 @@ var _mica5$clarify$View$taskView = function (model) {
 																	{ctor: '[]'}),
 																_1: {
 																	ctor: '::',
-																	_0: A2(_mica5$clarify$View$taskListToHtmlTable, model, sortedTaskViewTasks),
-																	_1: {ctor: '[]'}
+																	_0: A2(
+																		_elm_lang$html$Html$br,
+																		{ctor: '[]'},
+																		{ctor: '[]'}),
+																	_1: {
+																		ctor: '::',
+																		_0: A2(_mica5$clarify$View$taskListToHtmlTable, model, sortedTaskViewTasks),
+																		_1: {ctor: '[]'}
+																	}
 																}
 															}
 														}
