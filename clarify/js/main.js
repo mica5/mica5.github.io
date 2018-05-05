@@ -9009,28 +9009,36 @@ var _mica5$clarify$Update$update = F2(
 						{ctor: '[]'});
 				}
 			case 'CreateTask':
-				return _elm_lang$core$Native_Utils.eq(model.newTaskRegister.title, '') ? A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					model,
-					{ctor: '[]'}) : A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
+				if (_elm_lang$core$Native_Utils.eq(model.newTaskRegister.title, '')) {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
 						model,
-						{
-							tasks: A2(
-								_elm_lang$core$List$append,
-								model.tasks,
-								{
-									ctor: '::',
-									_0: model.newTaskRegister,
-									_1: {ctor: '[]'}
-								}),
-							newTaskRegister: A2(_mica5$clarify$Model$createEmptyTask, model.taskID, 0),
-							taskID: model.taskID + 1,
-							debug: _elm_lang$core$Basics$toString(msg),
-							lifeGoalID: model.lifeGoalID
-						}),
-					{ctor: '[]'});
+						{ctor: '[]'});
+				} else {
+					var newTaskRegister = model.newTaskRegister;
+					var updatedNewTask = _elm_lang$core$Native_Utils.update(
+						newTaskRegister,
+						{parentTaskId: model.viewingParentTaskId});
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								tasks: A2(
+									_elm_lang$core$List$append,
+									model.tasks,
+									{
+										ctor: '::',
+										_0: updatedNewTask,
+										_1: {ctor: '[]'}
+									}),
+								newTaskRegister: A2(_mica5$clarify$Model$createEmptyTask, model.taskID, 0),
+								taskID: model.taskID + 1,
+								debug: _elm_lang$core$Basics$toString(msg),
+								lifeGoalID: model.lifeGoalID
+							}),
+						{ctor: '[]'});
+				}
 			case 'UpdateLifeGoalDescription':
 				var _p20 = _p0._1;
 				var _p19 = _p0._0;
