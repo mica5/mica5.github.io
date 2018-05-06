@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="UTF-8">
+
+        <style type="text/css">
+        /*
+        style for debugging - show where all the containers are
+        */
+/*        div, img, tr, td, table {border:solid 1px black;}*/
+        </style>
+
+    <script src="counter.js"></script>
+    <script src="jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+    <script type="text/javascript">
+    var slidenum = 0;
+    $(document).ready(function () {
+        $(".slide").hide();
+        slidenum = document.location.hash;
+        if (slidenum == "") slidenum = 0
+        else {
+            slidenum = parseInt(document.location.hash.split("#")[1]);
+        }
+        $($(".slide")[slidenum]).show();
+    })
+    next = function() {
+        slidenum += 1;
+        var num_slides = $(".slide").length;
+        if (slidenum >= num_slides) slidenum = num_slides - 1;
+        $(".slide").hide();
+        $($(".slide")[slidenum]).show();
+    }
+    previous = function() {
+        slidenum -= 1;
+        if (slidenum < 0) slidenum = 0;
+        $(".slide").hide();
+        $($(".slide")[slidenum]).show();
+    }
+    function slide(event) {
+        var char = event.which || event.keyCode;
+        if (char == 37) previous()
+        else if (char == 39) next();
+        document.location.hash = "#" + slidenum;
+    }
+    </script>
+    <style type="text/css">
+    .slide {
+        padding-right:15%;
+        padding-left:5%;
+        font-size:28px;
+    }
+    .slide .prettyprint {font-size: 20px; border: none;}
+    </style>
+</head><body onkeypress="slide(event);">
+<div id="header" style="text-align:center">
+    <h1 style="color:#1D417D; font-size:50px">
+        Clarify</h1>
+</div>
+
+<!--
+introduction
+-->
+<div class="slide">
+    <ul>
+        <li>A minimalist todo app</li>
+        <li>Implemented in Elm</li>
+    </ul>
+
+    Team Members
+    <ul>
+        <li>Bronsin</li>
+        <li>Galen</li>
+        <li>Hovsep</li>
+        <li>Mica</li>
+    </ul>
+</div>
+
+<!--
+Elm overview
+-->
+<div class="slide">
+    Elm
+    <ul>
+        <li>Type-safe: everything checked at compile-time</li>
+        <li>Compiles to javascript</li>
+        <li>Full-screen app or embed</li>
+    </ul>
+</div>
+
+<!--
+Elm signals graph
+-->
+<div class="slide" style="padding:0; margin:0; text-align:center">
+    Elm Signal Graphs<br>
+    <center>
+        <div style="border: solid 1px black; text-align: center; width:75%; align:center">
+            <table style="height:25%">
+                <tr>
+                    <td style="text-align:center">Simple</td>
+                    <td style="text-align:center">FRP</td>
+                </tr><tr>
+                    <td><img src="signals.png" style="width:75%"></td>
+                    <td><img src="signals_full.png" style="width:75%"></td>
+                </tr>
+            </table>
+        </div>
+    </center>
+    <div style="width:100%; text-align:center">
+        Javascript<br>
+        <img src="signals_javascript.png" style="width:50%"><br>
+        Credit <a href="https://xkcd.com/657/">XKCD</a> (Movie Narrative Charts)
+    </div>
+</div>
+
+<!--
+Elm architecture: model/view
+-->
+<div class="slide">
+    <div id="counter1"></div>
+    <script>
+    Elm.Main.embed(document.getElementById("counter1"));
+    </script>
+    <ol>
+        <!--
+            model
+            -->
+        <li>model</li><ul>
+            <li>Holds the data</li>
+            <li>Drives the app</li>
+        </ul>
+        <!--
+            view
+            -->
+        <li>view</li><ul>
+            <li>Displays the data</li>
+            <li>Holds any number of controllers for user input</li>
+        </ul>
+    </ol>
+</div>
+
+<!--
+Elm architecture: controllers and the "update" method
+-->
+<div class="slide">
+    <div id="counter2"></div>
+    <script>
+    Elm.Main.embed(document.getElementById("counter2"));
+    </script>
+    <ul>
+        <li>controllers and the "update" method</li><ul>
+            <li>Elements that users can interact with that send messages that can be used to update the model</li>
+            <li>Receive messages and use them to update the model</li>
+        </ul>
+        <div style="text-align:center; width:100%">
+            <img src="update.png" style="width:50%">
+        </div>
+
+</div>
+
+
+<!--
+benefits of using elm
+-->
+<div class="slide">
+    Benefits:
+    <ul>
+        <li>Reusable pieces</li>
+        <li>Guaranteed type safety</li>
+        <li>No runtime errors (at least, not on the Elm side)</li>
+    </ul>
+</div>
+
+<!--
+Keeping state in a functional language
+-->
+<div class="slide">
+    Keeping state in a functional language
+    <ul>
+        <li>Keep track of current view (e.g. tab/page) based on a state stored as a string value</li>
+        <li>Strings are javascript-compatible for use with saving the model in the browser<br><br></li>
+        <li>e.g. <a href="https://github.com/evancz/elm-todomvc/blob/master/Todo.elm">elm-todomvc</a>:<br>
+            <pre class="prettyprint">-- visibility is one of "All", "Completed", "Active"
+visibility : String
+</pre>
+        </li>
+        <li>Clarify:<br>
+            <pre class="prettyprint">-- one of "TodayState", "TaskState", "LifeGoalsState",
+-- "LifeGoalState", "SettingsViewState", "HelpState"
+state: String
+</pre>
+        </li>
+    </ul>
+</div>
+
+<!--
+Special Features
+-->
+<div class="slide">
+    Model upgrades
+    <ul>
+        <li>As the Model in the Elm program changes, models saved in the old version break</li>
+        <li>Mechanism for managing updates: use javascript to upgrade a saved model for compatibility with newest Elm Model</li>
+        <pre class="prettyprint">// update from pre-version-ids to version 0
+if (
+    // user has used the app before
+    startingState != null
+    // user's model isn't compatible with
+    // the current version of the Elm app
+    && startingState.version == undefined
+) {
+    // upgrade startingState for compatibility
+    // with current elm model
+    ...
+}</pre>
+    </ul>
+</div>
+
+<!--
+empty
+-->
+<div class="slide">
+    End
+</div>
+
+
+
+</body></html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
