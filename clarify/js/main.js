@@ -11138,13 +11138,9 @@ var _mica5$clarify$View$taskToTableRow = F2(
 										_0: _mica5$clarify$View$buttonStyle,
 										_1: {
 											ctor: '::',
-											_0: _mica5$clarify$View$addRemoveButton150width,
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html_Events$onClick(
-													_mica5$clarify$Msg$DeleteTask(task.taskID)),
-												_1: {ctor: '[]'}
-											}
+											_0: _elm_lang$html$Html_Events$onClick(
+												_mica5$clarify$Msg$DeleteTask(task.taskID)),
+											_1: {ctor: '[]'}
 										}
 									},
 									{
@@ -11380,7 +11376,11 @@ var _mica5$clarify$View$settingsView = function (model) {
 			_1: {
 				ctor: '::',
 				_0: A3(_mica5$clarify$View$settingsButton, model, 'Show debug info', 'Contains all info about your tasks and life goals'),
-				_1: {ctor: '[]'}
+				_1: {
+					ctor: '::',
+					_0: A3(_mica5$clarify$View$settingsButton, model, 'Subtask mode', 'Allows tasks to be added underneath other tasks instead of just in a flat list'),
+					_1: {ctor: '[]'}
+				}
 			}
 		});
 };
