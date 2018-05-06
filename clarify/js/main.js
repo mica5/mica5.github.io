@@ -10329,14 +10329,6 @@ var _mica5$clarify$View$filterTasks = F3(
 			},
 			tasks);
 	});
-var _mica5$clarify$View$taskFilterTextInput = A2(
-	_elm_lang$html$Html$input,
-	{
-		ctor: '::',
-		_0: _elm_lang$html$Html_Events$onInput(_mica5$clarify$Msg$FilterTasks),
-		_1: {ctor: '[]'}
-	},
-	{ctor: '[]'});
 var _mica5$clarify$View$sortTasks = F2(
 	function (model, tasks) {
 		return A2(_elm_lang$core$List$member, 'Life Goal', model.settings) ? A2(
@@ -10436,70 +10428,6 @@ var _mica5$clarify$View$addRemoveButton150width = _elm_lang$html$Html_Attributes
 			_1: {ctor: '[]'}
 		}
 	});
-var _mica5$clarify$View$estimatedMinutesSelector = function (task) {
-	return A2(
-		_elm_lang$html$Html$input,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$type_('number'),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Events$onInput(
-					_mica5$clarify$Msg$UpdateTaskEstimatedMinutes(task.taskID)),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$value(
-						_elm_lang$core$Basics$toString(task.estimatedMinutes)),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$min('0'),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$max('9999'),
-							_1: {ctor: '[]'}
-						}
-					}
-				}
-			}
-		},
-		{ctor: '[]'});
-};
-var _mica5$clarify$View$lifeGoalSelectorForCreating = function (life_goals) {
-	return A2(
-		_elm_lang$html$Html$select,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Events$onInput(
-				_mica5$clarify$Msg$UpdateTaskRegister('lifeGoal')),
-			_1: {ctor: '[]'}
-		},
-		A2(
-			_elm_lang$core$List$map,
-			function (lifeGoal) {
-				return A2(
-					_elm_lang$html$Html$option,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$value(
-							_elm_lang$core$Basics$toString(lifeGoal.id)),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(lifeGoal.title),
-						_1: {ctor: '[]'}
-					});
-			},
-			{
-				ctor: '::',
-				_0: {
-					title: 'Life Goal Selection',
-					priorities: {ctor: '[]'},
-					id: 0
-				},
-				_1: life_goals
-			}));
-};
 var _mica5$clarify$View$getLifeGoal = F2(
 	function (goals, goalId) {
 		var _p3 = _elm_lang$core$List$head(
@@ -10534,6 +10462,205 @@ var _mica5$clarify$View$helpView = A2(
 			}),
 		_1: {ctor: '[]'}
 	});
+var _mica5$clarify$View$inputStyle = _elm_lang$html$Html_Attributes$style(
+	{
+		ctor: '::',
+		_0: _seanhess$elm_style$Style$borderRadius('6px'),
+		_1: {
+			ctor: '::',
+			_0: _seanhess$elm_style$Style$padding('5px'),
+			_1: {ctor: '[]'}
+		}
+	});
+var _mica5$clarify$View$lifeGoalSelectorForCreating = function (life_goals) {
+	return A2(
+		_elm_lang$html$Html$select,
+		{
+			ctor: '::',
+			_0: _mica5$clarify$View$inputStyle,
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$style(
+					{
+						ctor: '::',
+						_0: _seanhess$elm_style$Style$borderRadius('6px'),
+						_1: {
+							ctor: '::',
+							_0: _seanhess$elm_style$Style$padding('6px'),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onInput(
+						_mica5$clarify$Msg$UpdateTaskRegister('lifeGoal')),
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		A2(
+			_elm_lang$core$List$map,
+			function (lifeGoal) {
+				return A2(
+					_elm_lang$html$Html$option,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$value(
+							_elm_lang$core$Basics$toString(lifeGoal.id)),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(lifeGoal.title),
+						_1: {ctor: '[]'}
+					});
+			},
+			{
+				ctor: '::',
+				_0: {
+					title: 'Life Goal Selection',
+					priorities: {ctor: '[]'},
+					id: 0
+				},
+				_1: life_goals
+			}));
+};
+var _mica5$clarify$View$estimatedMinutesSelector = function (task) {
+	return A2(
+		_elm_lang$html$Html$input,
+		{
+			ctor: '::',
+			_0: _mica5$clarify$View$inputStyle,
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$type_('number'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onInput(
+						_mica5$clarify$Msg$UpdateTaskEstimatedMinutes(task.taskID)),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$value(
+							_elm_lang$core$Basics$toString(task.estimatedMinutes)),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$min('0'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$max('9999'),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}
+		},
+		{ctor: '[]'});
+};
+var _mica5$clarify$View$taskFilterTextInput = A2(
+	_elm_lang$html$Html$input,
+	{
+		ctor: '::',
+		_0: _mica5$clarify$View$inputStyle,
+		_1: {
+			ctor: '::',
+			_0: _elm_lang$html$Html_Events$onInput(_mica5$clarify$Msg$FilterTasks),
+			_1: {ctor: '[]'}
+		}
+	},
+	{ctor: '[]'});
+var _mica5$clarify$View$tabStyle = _elm_lang$html$Html_Attributes$style(
+	{
+		ctor: '::',
+		_0: _seanhess$elm_style$Style$borderRadius('2px'),
+		_1: {
+			ctor: '::',
+			_0: _seanhess$elm_style$Style$padding('4px'),
+			_1: {
+				ctor: '::',
+				_0: _seanhess$elm_style$Style$marginLeft('-2px'),
+				_1: {
+					ctor: '::',
+					_0: _seanhess$elm_style$Style$marginRight('-2px'),
+					_1: {
+						ctor: '::',
+						_0: _seanhess$elm_style$Style$marginBottom('-5px'),
+						_1: {
+							ctor: '::',
+							_0: _seanhess$elm_style$Style$backgroundColor('#1D417D'),
+							_1: {
+								ctor: '::',
+								_0: _seanhess$elm_style$Style$borderColor('#1D417D'),
+								_1: {
+									ctor: '::',
+									_0: _seanhess$elm_style$Style$color('white'),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	});
+var _mica5$clarify$View$sortSelectorButton = function (fieldName) {
+	return A2(
+		_elm_lang$html$Html$button,
+		{
+			ctor: '::',
+			_0: _mica5$clarify$View$tabStyle,
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$style(
+					{
+						ctor: '::',
+						_0: _seanhess$elm_style$Style$marginLeft('1px'),
+						_1: {
+							ctor: '::',
+							_0: _seanhess$elm_style$Style$marginRight('1px'),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onClick(
+						_mica5$clarify$Msg$ChangeTaskSorting(fieldName)),
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(fieldName),
+			_1: {ctor: '[]'}
+		});
+};
+var _mica5$clarify$View$sortBySelectorButtons = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('Sort by: '),
+			_1: {
+				ctor: '::',
+				_0: _mica5$clarify$View$sortSelectorButton('None'),
+				_1: {
+					ctor: '::',
+					_0: _mica5$clarify$View$sortSelectorButton('Life Goal'),
+					_1: {
+						ctor: '::',
+						_0: _mica5$clarify$View$sortSelectorButton('Estimated Minutes'),
+						_1: {
+							ctor: '::',
+							_0: _mica5$clarify$View$sortSelectorButton('Description'),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}
+		});
+};
 var _mica5$clarify$View$buttonStyle = _elm_lang$html$Html_Attributes$style(
 	{
 		ctor: '::',
@@ -10603,18 +10730,323 @@ var _mica5$clarify$View$settingsButton = F3(
 				}
 			});
 	});
+var _mica5$clarify$View$noStyle = _elm_lang$html$Html_Attributes$style(
+	{
+		ctor: '::',
+		_0: _seanhess$elm_style$Style$fontFamily('sans-serif'),
+		_1: {
+			ctor: '::',
+			_0: _seanhess$elm_style$Style$fontSize('15px'),
+			_1: {ctor: '[]'}
+		}
+	});
+var _mica5$clarify$View$redFont = _elm_lang$html$Html_Attributes$style(
+	{
+		ctor: '::',
+		_0: _seanhess$elm_style$Style$color('white'),
+		_1: {
+			ctor: '::',
+			_0: _seanhess$elm_style$Style$fontFamily('sans-serif'),
+			_1: {
+				ctor: '::',
+				_0: _seanhess$elm_style$Style$fontWeight('bold'),
+				_1: {
+					ctor: '::',
+					_0: _seanhess$elm_style$Style$fontSize('17px'),
+					_1: {ctor: '[]'}
+				}
+			}
+		}
+	});
+var _mica5$clarify$View$helpLinkButton = function (model) {
+	return A2(
+		_elm_lang$html$Html$button,
+		{
+			ctor: '::',
+			_0: _mica5$clarify$View$tabStyle,
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$HelpState),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Native_Utils.eq(model.state, 'HelpState') ? _mica5$clarify$View$redFont : _mica5$clarify$View$noStyle,
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('Help'),
+			_1: {ctor: '[]'}
+		});
+};
+var _mica5$clarify$View$lifeGoalsLinkButton = function (model) {
+	return A2(
+		_elm_lang$html$Html$button,
+		{
+			ctor: '::',
+			_0: _mica5$clarify$View$tabStyle,
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$href('#'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$LifeGoalsState),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Native_Utils.eq(model.state, 'LifeGoalsState') ? _mica5$clarify$View$redFont : _mica5$clarify$View$noStyle,
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('Life Goals'),
+			_1: {ctor: '[]'}
+		});
+};
+var _mica5$clarify$View$settingsLinkButton = function (model) {
+	return A2(
+		_elm_lang$html$Html$button,
+		{
+			ctor: '::',
+			_0: _mica5$clarify$View$tabStyle,
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$href('#'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$SettingsViewState),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Native_Utils.eq(model.state, 'SettingsViewState') ? _mica5$clarify$View$redFont : _mica5$clarify$View$noStyle,
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('Settings'),
+			_1: {ctor: '[]'}
+		});
+};
+var _mica5$clarify$View$todayLinkA = function (model) {
+	return A2(
+		_elm_lang$html$Html$a,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$href('#'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$TaskState),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Native_Utils.eq(model.state, 'TaskState') ? _mica5$clarify$View$redFont : _mica5$clarify$View$noStyle,
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('Tasks'),
+			_1: {ctor: '[]'}
+		});
+};
+var _mica5$clarify$View$todayLinkButton = function (model) {
+	return A2(
+		_elm_lang$html$Html$button,
+		{
+			ctor: '::',
+			_0: _mica5$clarify$View$tabStyle,
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$href('#'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$TaskState),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Native_Utils.eq(model.state, 'TaskState') ? _mica5$clarify$View$redFont : _mica5$clarify$View$noStyle,
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('Tasks'),
+			_1: {ctor: '[]'}
+		});
+};
+var _mica5$clarify$View$htmlNavigationBar = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$button,
+				{
+					ctor: '::',
+					_0: _mica5$clarify$View$tabStyle,
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$href('#'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$TodayState),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$core$Native_Utils.eq(model.state, 'TodayState') ? _mica5$clarify$View$redFont : _mica5$clarify$View$noStyle,
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Today'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(' '),
+				_1: {
+					ctor: '::',
+					_0: _mica5$clarify$View$todayLinkButton(model),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(' '),
+						_1: {
+							ctor: '::',
+							_0: _mica5$clarify$View$lifeGoalsLinkButton(model),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(' '),
+								_1: {
+									ctor: '::',
+									_0: _mica5$clarify$View$settingsLinkButton(model),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(' '),
+										_1: {
+											ctor: '::',
+											_0: _mica5$clarify$View$helpLinkButton(model),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		});
+};
+var _mica5$clarify$View$createViewButton = function (model) {
+	return A2(
+		_elm_lang$html$Html$button,
+		{
+			ctor: '::',
+			_0: _mica5$clarify$View$tabStyle,
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$href('#'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$CreateState),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Native_Utils.eq(model.state, 'CreateState') ? _mica5$clarify$View$redFont : _mica5$clarify$View$noStyle,
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('Create'),
+			_1: {ctor: '[]'}
+		});
+};
+var _mica5$clarify$View$htmlAppHeader = A2(
+	_elm_lang$html$Html$div,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$style(
+			{
+				ctor: '::',
+				_0: _seanhess$elm_style$Style$display(_seanhess$elm_style$Style$flex_),
+				_1: {
+					ctor: '::',
+					_0: _seanhess$elm_style$Style$justifyContent(_seanhess$elm_style$Style$center),
+					_1: {
+						ctor: '::',
+						_0: _seanhess$elm_style$Style$alignItems(_seanhess$elm_style$Style$center),
+						_1: {
+							ctor: '::',
+							_0: _seanhess$elm_style$Style$color('#1D417D'),
+							_1: {
+								ctor: '::',
+								_0: _seanhess$elm_style$Style$fontSize('30px'),
+								_1: {
+									ctor: '::',
+									_0: _seanhess$elm_style$Style$fontFamily('sans-serif'),
+									_1: {
+										ctor: '::',
+										_0: _seanhess$elm_style$Style$fontWeight('bold'),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}
+				}
+			}),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html$text('Clarify'),
+		_1: {ctor: '[]'}
+	});
+var _mica5$clarify$View$centeredLayout = {
+	ctor: '::',
+	_0: _seanhess$elm_style$Style$display(_seanhess$elm_style$Style$flex_),
+	_1: {
+		ctor: '::',
+		_0: _seanhess$elm_style$Style$justifyContent(_seanhess$elm_style$Style$center),
+		_1: {
+			ctor: '::',
+			_0: _seanhess$elm_style$Style$alignItems(_seanhess$elm_style$Style$center),
+			_1: {ctor: '[]'}
+		}
+	}
+};
+var _mica5$clarify$View$width100p = _elm_lang$html$Html_Attributes$style(
+	{
+		ctor: '::',
+		_0: {ctor: '_Tuple2', _0: 'width', _1: '100%'},
+		_1: {ctor: '[]'}
+	});
 var _mica5$clarify$View$lifeGoalSelectorForEditing = F2(
 	function (life_goals, task) {
 		return A2(
 			_elm_lang$html$Html$select,
 			{
 				ctor: '::',
-				_0: _mica5$clarify$View$buttonStyle,
+				_0: _mica5$clarify$View$inputStyle,
 				_1: {
 					ctor: '::',
-					_0: _elm_lang$html$Html_Events$onInput(
-						_mica5$clarify$Msg$UpdateTaskGoal(task.taskID)),
-					_1: {ctor: '[]'}
+					_0: _mica5$clarify$View$width100p,
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Events$onInput(
+							_mica5$clarify$Msg$UpdateTaskGoal(task.taskID)),
+						_1: {ctor: '[]'}
+					}
 				}
 			},
 			A2(
@@ -10641,51 +11073,6 @@ var _mica5$clarify$View$lifeGoalSelectorForEditing = F2(
 				},
 				life_goals));
 	});
-var _mica5$clarify$View$sortSelectorButton = function (fieldName) {
-	return A2(
-		_elm_lang$html$Html$button,
-		{
-			ctor: '::',
-			_0: _mica5$clarify$View$buttonStyle,
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Events$onClick(
-					_mica5$clarify$Msg$ChangeTaskSorting(fieldName)),
-				_1: {ctor: '[]'}
-			}
-		},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text(fieldName),
-			_1: {ctor: '[]'}
-		});
-};
-var _mica5$clarify$View$sortBySelectorButtons = function (model) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text('Sort by: '),
-			_1: {
-				ctor: '::',
-				_0: _mica5$clarify$View$sortSelectorButton('None'),
-				_1: {
-					ctor: '::',
-					_0: _mica5$clarify$View$sortSelectorButton('Life Goal'),
-					_1: {
-						ctor: '::',
-						_0: _mica5$clarify$View$sortSelectorButton('Estimated Minutes'),
-						_1: {
-							ctor: '::',
-							_0: _mica5$clarify$View$sortSelectorButton('Description'),
-							_1: {ctor: '[]'}
-						}
-					}
-				}
-			}
-		});
-};
 var _mica5$clarify$View$taskToTableRow = F2(
 	function (model, task) {
 		return A2(
@@ -10751,9 +11138,13 @@ var _mica5$clarify$View$taskToTableRow = F2(
 										_0: _mica5$clarify$View$buttonStyle,
 										_1: {
 											ctor: '::',
-											_0: _elm_lang$html$Html_Events$onClick(
-												_mica5$clarify$Msg$DeleteTask(task.taskID)),
-											_1: {ctor: '[]'}
+											_0: _mica5$clarify$View$addRemoveButton150width,
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Events$onClick(
+													_mica5$clarify$Msg$DeleteTask(task.taskID)),
+												_1: {ctor: '[]'}
+											}
 										}
 									},
 									{
@@ -10827,28 +11218,41 @@ var _mica5$clarify$View$taskToTableRow = F2(
 								_elm_lang$html$Html$textarea,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$defaultValue(task.title),
+									_0: _mica5$clarify$View$inputStyle,
 									_1: {
 										ctor: '::',
-										_0: _elm_lang$html$Html_Events$onInput(
-											_mica5$clarify$Msg$UpdateTaskDescription(task.taskID)),
+										_0: _elm_lang$html$Html_Attributes$style(
+											{
+												ctor: '::',
+												_0: _seanhess$elm_style$Style$height('100%'),
+												_1: {ctor: '[]'}
+											}),
 										_1: {
 											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$style(
-												{
+											_0: _elm_lang$html$Html_Attributes$defaultValue(task.title),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Events$onInput(
+													_mica5$clarify$Msg$UpdateTaskDescription(task.taskID)),
+												_1: {
 													ctor: '::',
-													_0: {ctor: '_Tuple2', _0: 'width', _1: '99%'},
-													_1: {
-														ctor: '::',
-														_0: {ctor: '_Tuple2', _0: 'height', _1: '133px'},
-														_1: {
+													_0: _elm_lang$html$Html_Attributes$style(
+														{
 															ctor: '::',
-															_0: {ctor: '_Tuple2', _0: 'overflow', _1: 'auto'},
-															_1: {ctor: '[]'}
-														}
-													}
-												}),
-											_1: {ctor: '[]'}
+															_0: {ctor: '_Tuple2', _0: 'width', _1: '99%'},
+															_1: {
+																ctor: '::',
+																_0: {ctor: '_Tuple2', _0: 'height', _1: '133px'},
+																_1: {
+																	ctor: '::',
+																	_0: {ctor: '_Tuple2', _0: 'overflow', _1: 'auto'},
+																	_1: {ctor: '[]'}
+																}
+															}
+														}),
+													_1: {ctor: '[]'}
+												}
+											}
 										}
 									}
 								},
@@ -10865,13 +11269,12 @@ var _mica5$clarify$View$taskListToHtmlTable = F2(
 			_elm_lang$html$Html$table,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$style(
-					{
-						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 'width', _1: '100%'},
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
+				_0: _mica5$clarify$View$inputStyle,
+				_1: {
+					ctor: '::',
+					_0: _mica5$clarify$View$width100p,
+					_1: {ctor: '[]'}
+				}
 			},
 			{
 				ctor: '::',
@@ -10886,265 +11289,6 @@ var _mica5$clarify$View$taskListToHtmlTable = F2(
 						tasks)),
 				_1: {ctor: '[]'}
 			});
-	});
-var _mica5$clarify$View$noStyle = _elm_lang$html$Html_Attributes$style(
-	{
-		ctor: '::',
-		_0: _seanhess$elm_style$Style$fontFamily('sans-serif'),
-		_1: {
-			ctor: '::',
-			_0: _seanhess$elm_style$Style$fontSize('15px'),
-			_1: {ctor: '[]'}
-		}
-	});
-var _mica5$clarify$View$redFont = _elm_lang$html$Html_Attributes$style(
-	{
-		ctor: '::',
-		_0: _seanhess$elm_style$Style$color('red'),
-		_1: {
-			ctor: '::',
-			_0: _seanhess$elm_style$Style$fontFamily('sans-serif'),
-			_1: {
-				ctor: '::',
-				_0: _seanhess$elm_style$Style$fontWeight('bold'),
-				_1: {
-					ctor: '::',
-					_0: _seanhess$elm_style$Style$fontSize('17px'),
-					_1: {ctor: '[]'}
-				}
-			}
-		}
-	});
-var _mica5$clarify$View$helpLinkButton = function (model) {
-	return A2(
-		_elm_lang$html$Html$a,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$href('#'),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$HelpState),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$core$Native_Utils.eq(model.state, 'HelpState') ? _mica5$clarify$View$redFont : _mica5$clarify$View$noStyle,
-					_1: {ctor: '[]'}
-				}
-			}
-		},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text('Help'),
-			_1: {ctor: '[]'}
-		});
-};
-var _mica5$clarify$View$lifeGoalsLinkButton = function (model) {
-	return A2(
-		_elm_lang$html$Html$a,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$href('#'),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$LifeGoalsState),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$core$Native_Utils.eq(model.state, 'LifeGoalsState') ? _mica5$clarify$View$redFont : _mica5$clarify$View$noStyle,
-					_1: {ctor: '[]'}
-				}
-			}
-		},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text('Life Goals'),
-			_1: {ctor: '[]'}
-		});
-};
-var _mica5$clarify$View$settingsLinkButton = function (model) {
-	return A2(
-		_elm_lang$html$Html$a,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$href('#'),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$SettingsViewState),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$core$Native_Utils.eq(model.state, 'SettingsViewState') ? _mica5$clarify$View$redFont : _mica5$clarify$View$noStyle,
-					_1: {ctor: '[]'}
-				}
-			}
-		},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text('Settings'),
-			_1: {ctor: '[]'}
-		});
-};
-var _mica5$clarify$View$todayLinkButton = function (model) {
-	return A2(
-		_elm_lang$html$Html$a,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$href('#'),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$TaskState),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$core$Native_Utils.eq(model.state, 'TaskState') ? _mica5$clarify$View$redFont : _mica5$clarify$View$noStyle,
-					_1: {ctor: '[]'}
-				}
-			}
-		},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text('Tasks'),
-			_1: {ctor: '[]'}
-		});
-};
-var _mica5$clarify$View$htmlNavigationBar = function (model) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$a,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$href('#'),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$TodayState),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$core$Native_Utils.eq(model.state, 'TodayState') ? _mica5$clarify$View$redFont : _mica5$clarify$View$noStyle,
-							_1: {ctor: '[]'}
-						}
-					}
-				},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text('Today'),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html$text(' '),
-				_1: {
-					ctor: '::',
-					_0: _mica5$clarify$View$todayLinkButton(model),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(' '),
-						_1: {
-							ctor: '::',
-							_0: _mica5$clarify$View$lifeGoalsLinkButton(model),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html$text(' '),
-								_1: {
-									ctor: '::',
-									_0: _mica5$clarify$View$settingsLinkButton(model),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html$text(' '),
-										_1: {
-											ctor: '::',
-											_0: _mica5$clarify$View$helpLinkButton(model),
-											_1: {ctor: '[]'}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		});
-};
-var _mica5$clarify$View$createViewButton = function (model) {
-	return A2(
-		_elm_lang$html$Html$a,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$href('#'),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$CreateState),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$core$Native_Utils.eq(model.state, 'CreateState') ? _mica5$clarify$View$redFont : _mica5$clarify$View$noStyle,
-					_1: {ctor: '[]'}
-				}
-			}
-		},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text('Create'),
-			_1: {ctor: '[]'}
-		});
-};
-var _mica5$clarify$View$htmlAppHeader = A2(
-	_elm_lang$html$Html$div,
-	{
-		ctor: '::',
-		_0: _elm_lang$html$Html_Attributes$style(
-			{
-				ctor: '::',
-				_0: _seanhess$elm_style$Style$display(_seanhess$elm_style$Style$flex_),
-				_1: {
-					ctor: '::',
-					_0: _seanhess$elm_style$Style$justifyContent(_seanhess$elm_style$Style$center),
-					_1: {
-						ctor: '::',
-						_0: _seanhess$elm_style$Style$alignItems(_seanhess$elm_style$Style$center),
-						_1: {
-							ctor: '::',
-							_0: _seanhess$elm_style$Style$color('#1D417D'),
-							_1: {
-								ctor: '::',
-								_0: _seanhess$elm_style$Style$fontSize('30px'),
-								_1: {
-									ctor: '::',
-									_0: _seanhess$elm_style$Style$fontFamily('sans-serif'),
-									_1: {
-										ctor: '::',
-										_0: _seanhess$elm_style$Style$fontWeight('bold'),
-										_1: {ctor: '[]'}
-									}
-								}
-							}
-						}
-					}
-				}
-			}),
-		_1: {ctor: '[]'}
-	},
-	{
-		ctor: '::',
-		_0: _elm_lang$html$Html$text('Clarify'),
-		_1: {ctor: '[]'}
-	});
-var _mica5$clarify$View$centeredLayout = {
-	ctor: '::',
-	_0: _seanhess$elm_style$Style$display(_seanhess$elm_style$Style$flex_),
-	_1: {
-		ctor: '::',
-		_0: _seanhess$elm_style$Style$justifyContent(_seanhess$elm_style$Style$center),
-		_1: {
-			ctor: '::',
-			_0: _seanhess$elm_style$Style$alignItems(_seanhess$elm_style$Style$center),
-			_1: {ctor: '[]'}
-		}
-	}
-};
-var _mica5$clarify$View$width100p = _elm_lang$html$Html_Attributes$style(
-	{
-		ctor: '::',
-		_0: {ctor: '_Tuple2', _0: 'width', _1: '100%'},
-		_1: {ctor: '[]'}
 	});
 var _mica5$clarify$View$lifeGoalElement = function (lifeGoal) {
 	return A2(
@@ -11182,12 +11326,16 @@ var _mica5$clarify$View$lifeGoalElement = function (lifeGoal) {
 						_elm_lang$html$Html$input,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$defaultValue(lifeGoal.title),
+							_0: _mica5$clarify$View$inputStyle,
 							_1: {
 								ctor: '::',
-								_0: _elm_lang$html$Html_Events$onInput(
-									_mica5$clarify$Msg$UpdateLifeGoalDescription(lifeGoal.id)),
-								_1: {ctor: '[]'}
+								_0: _elm_lang$html$Html_Attributes$defaultValue(lifeGoal.title),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Events$onInput(
+										_mica5$clarify$Msg$UpdateLifeGoalDescription(lifeGoal.id)),
+									_1: {ctor: '[]'}
+								}
 							}
 						},
 						{ctor: '[]'}),
@@ -11271,7 +11419,7 @@ var _mica5$clarify$View$taskView = function (model) {
 						{ctor: '[]'}),
 					_1: {
 						ctor: '::',
-						_0: _elm_lang$html$Html$text('Filter Tasks: '),
+						_0: _elm_lang$html$Html$text('Search Task: '),
 						_1: {
 							ctor: '::',
 							_0: _mica5$clarify$View$taskFilterTextInput,
@@ -11283,24 +11431,46 @@ var _mica5$clarify$View$taskView = function (model) {
 									{ctor: '[]'}),
 								_1: {
 									ctor: '::',
-									_0: _elm_lang$html$Html$text('Estimated minutes for displayed tasks: '),
+									_0: A2(
+										_elm_lang$html$Html$button,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$TopLevel),
+											_1: {
+												ctor: '::',
+												_0: _mica5$clarify$View$buttonStyle,
+												_1: {ctor: '[]'}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Top Level'),
+											_1: {ctor: '[]'}
+										}),
 									_1: {
 										ctor: '::',
-										_0: _mica5$clarify$View$tasksEstimatedMinutesSumText(sortedTaskViewTasks),
+										_0: A2(
+											_elm_lang$html$Html$br,
+											{ctor: '[]'},
+											{ctor: '[]'}),
 										_1: {
 											ctor: '::',
-											_0: _elm_lang$html$Html$text(
-												A2(
-													_elm_lang$core$Basics_ops['++'],
-													' (',
-													A2(
-														_elm_lang$core$Basics_ops['++'],
-														A2(
-															_myrho$elm_round$Round$round,
-															2,
-															_elm_lang$core$Basics$toFloat(
-																_mica5$clarify$View$tasksEstimatedMinutesSum(sortedTaskViewTasks)) / 60),
-														' hours)'))),
+											_0: A2(
+												_elm_lang$html$Html$button,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$UpOneLevel),
+													_1: {
+														ctor: '::',
+														_0: _mica5$clarify$View$buttonStyle,
+														_1: {ctor: '[]'}
+													}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Up one level'),
+													_1: {ctor: '[]'}
+												}),
 											_1: {
 												ctor: '::',
 												_0: A2(
@@ -11310,60 +11480,38 @@ var _mica5$clarify$View$taskView = function (model) {
 												_1: {
 													ctor: '::',
 													_0: A2(
-														_elm_lang$html$Html$button,
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$TopLevel),
-															_1: {
-																ctor: '::',
-																_0: _mica5$clarify$View$buttonStyle,
-																_1: {ctor: '[]'}
-															}
-														},
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html$text('Top Level'),
-															_1: {ctor: '[]'}
-														}),
+														_elm_lang$html$Html$br,
+														{ctor: '[]'},
+														{ctor: '[]'}),
 													_1: {
 														ctor: '::',
-														_0: A2(
-															_elm_lang$html$Html$br,
-															{ctor: '[]'},
-															{ctor: '[]'}),
+														_0: A2(_mica5$clarify$View$taskListToHtmlTable, model, sortedTaskViewTasks),
 														_1: {
 															ctor: '::',
 															_0: A2(
-																_elm_lang$html$Html$button,
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$UpOneLevel),
-																	_1: {
-																		ctor: '::',
-																		_0: _mica5$clarify$View$buttonStyle,
-																		_1: {ctor: '[]'}
-																	}
-																},
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html$text('Up one level'),
-																	_1: {ctor: '[]'}
-																}),
+																_elm_lang$html$Html$br,
+																{ctor: '[]'},
+																{ctor: '[]'}),
 															_1: {
 																ctor: '::',
-																_0: A2(
-																	_elm_lang$html$Html$br,
-																	{ctor: '[]'},
-																	{ctor: '[]'}),
+																_0: _elm_lang$html$Html$text('Estimated minutes for displayed tasks: '),
 																_1: {
 																	ctor: '::',
-																	_0: A2(
-																		_elm_lang$html$Html$br,
-																		{ctor: '[]'},
-																		{ctor: '[]'}),
+																	_0: _mica5$clarify$View$tasksEstimatedMinutesSumText(sortedTaskViewTasks),
 																	_1: {
 																		ctor: '::',
-																		_0: A2(_mica5$clarify$View$taskListToHtmlTable, model, sortedTaskViewTasks),
+																		_0: _elm_lang$html$Html$text(
+																			A2(
+																				_elm_lang$core$Basics_ops['++'],
+																				' (',
+																				A2(
+																					_elm_lang$core$Basics_ops['++'],
+																					A2(
+																						_myrho$elm_round$Round$round,
+																						2,
+																						_elm_lang$core$Basics$toFloat(
+																							_mica5$clarify$View$tasksEstimatedMinutesSum(sortedTaskViewTasks)) / 60),
+																					' hours)'))),
 																		_1: {ctor: '[]'}
 																	}
 																}
@@ -11453,18 +11601,22 @@ var _mica5$clarify$View$taskView = function (model) {
 																_elm_lang$html$Html$input,
 																{
 																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$type_('number'),
+																	_0: _mica5$clarify$View$inputStyle,
 																	_1: {
 																		ctor: '::',
-																		_0: _elm_lang$html$Html_Events$onInput(
-																			_mica5$clarify$Msg$UpdateTaskRegister('estimatedMinutes')),
+																		_0: _elm_lang$html$Html_Attributes$type_('number'),
 																		_1: {
 																			ctor: '::',
-																			_0: _elm_lang$html$Html_Attributes$min('0'),
+																			_0: _elm_lang$html$Html_Events$onInput(
+																				_mica5$clarify$Msg$UpdateTaskRegister('estimatedMinutes')),
 																			_1: {
 																				ctor: '::',
-																				_0: _elm_lang$html$Html_Attributes$max('9999'),
-																				_1: {ctor: '[]'}
+																				_0: _elm_lang$html$Html_Attributes$min('0'),
+																				_1: {
+																					ctor: '::',
+																					_0: _elm_lang$html$Html_Attributes$max('9999'),
+																					_1: {ctor: '[]'}
+																				}
 																			}
 																		}
 																	}
@@ -11491,9 +11643,13 @@ var _mica5$clarify$View$taskView = function (model) {
 																				_elm_lang$html$Html$input,
 																				{
 																					ctor: '::',
-																					_0: _elm_lang$html$Html_Events$onInput(
-																						_mica5$clarify$Msg$UpdateTaskRegister('description')),
-																					_1: {ctor: '[]'}
+																					_0: _mica5$clarify$View$inputStyle,
+																					_1: {
+																						ctor: '::',
+																						_0: _elm_lang$html$Html_Events$onInput(
+																							_mica5$clarify$Msg$UpdateTaskRegister('description')),
+																						_1: {ctor: '[]'}
+																					}
 																				},
 																				{ctor: '[]'}),
 																			_1: {
@@ -11624,7 +11780,7 @@ var _mica5$clarify$View$todayView = function (model) {
 						_0: _elm_lang$html$Html$text('Go to '),
 						_1: {
 							ctor: '::',
-							_0: _mica5$clarify$View$todayLinkButton(model),
+							_0: _mica5$clarify$View$todayLinkA(model),
 							_1: {
 								ctor: '::',
 								_0: _elm_lang$html$Html$text(' to add some!'),
@@ -11692,8 +11848,12 @@ var _mica5$clarify$View$lifeGoalsView = function (model) {
 													_elm_lang$html$Html$input,
 													{
 														ctor: '::',
-														_0: _elm_lang$html$Html_Events$onInput(_mica5$clarify$Msg$UpdateCreateLifeGoalRegister),
-														_1: {ctor: '[]'}
+														_0: _mica5$clarify$View$inputStyle,
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Events$onInput(_mica5$clarify$Msg$UpdateCreateLifeGoalRegister),
+															_1: {ctor: '[]'}
+														}
 													},
 													{ctor: '[]'}),
 												_1: {
