@@ -10457,10 +10457,21 @@ var _mica5$clarify$View$helpView = A2(
 			{ctor: '[]'},
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html$text('In the \"View Subtasks\" button (e.g. \"View Subtasks (4/10)\"), the first number 4 is the number of direct subtasks, and the second number 10 is the total number of recursive subtasks'),
+				_0: _elm_lang$html$Html$text('Data is constantly saved instantly as you type, so you don\'t need to worry about losing your data. (That doesn\'t apply to the \"Create a task\" section - that is wiped away when you leave the \"Tasks\" tab.)'),
 				_1: {ctor: '[]'}
 			}),
-		_1: {ctor: '[]'}
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$li,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('In the \"View Subtasks\" button (e.g. \"View Subtasks (4/10)\"), the first number 4 is the number of direct subtasks, and the second number 10 is the total number of recursive subtasks'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		}
 	});
 var _mica5$clarify$View$inputStyle = _elm_lang$html$Html_Attributes$style(
 	{
@@ -11416,19 +11427,27 @@ var _mica5$clarify$View$taskView = function (model) {
 			_elm_lang$core$List$append,
 			{
 				ctor: '::',
-				_0: _mica5$clarify$View$sortBySelectorButtons(model),
+				_0: _elm_lang$html$Html$text('Estimated minutes for displayed tasks: '),
 				_1: {
 					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$br,
-						{ctor: '[]'},
-						{ctor: '[]'}),
+					_0: _mica5$clarify$View$tasksEstimatedMinutesSumText(sortedTaskViewTasks),
 					_1: {
 						ctor: '::',
-						_0: _elm_lang$html$Html$text('Search Task: '),
+						_0: _elm_lang$html$Html$text(
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								' (',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									A2(
+										_myrho$elm_round$Round$round,
+										2,
+										_elm_lang$core$Basics$toFloat(
+											_mica5$clarify$View$tasksEstimatedMinutesSum(sortedTaskViewTasks)) / 60),
+									' hours)'))),
 						_1: {
 							ctor: '::',
-							_0: _mica5$clarify$View$taskFilterTextInput,
+							_0: _mica5$clarify$View$sortBySelectorButtons(model),
 							_1: {
 								ctor: '::',
 								_0: A2(
@@ -11437,46 +11456,16 @@ var _mica5$clarify$View$taskView = function (model) {
 									{ctor: '[]'}),
 								_1: {
 									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$button,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$TopLevel),
-											_1: {
-												ctor: '::',
-												_0: _mica5$clarify$View$buttonStyle,
-												_1: {ctor: '[]'}
-											}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Top Level'),
-											_1: {ctor: '[]'}
-										}),
+									_0: _elm_lang$html$Html$text('Filter Tasks: '),
 									_1: {
 										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$br,
-											{ctor: '[]'},
-											{ctor: '[]'}),
+										_0: _mica5$clarify$View$taskFilterTextInput,
 										_1: {
 											ctor: '::',
 											_0: A2(
-												_elm_lang$html$Html$button,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$UpOneLevel),
-													_1: {
-														ctor: '::',
-														_0: _mica5$clarify$View$buttonStyle,
-														_1: {ctor: '[]'}
-													}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('Up one level'),
-													_1: {ctor: '[]'}
-												}),
+												_elm_lang$html$Html$br,
+												{ctor: '[]'},
+												{ctor: '[]'}),
 											_1: {
 												ctor: '::',
 												_0: A2(
@@ -11486,38 +11475,60 @@ var _mica5$clarify$View$taskView = function (model) {
 												_1: {
 													ctor: '::',
 													_0: A2(
-														_elm_lang$html$Html$br,
-														{ctor: '[]'},
-														{ctor: '[]'}),
+														_elm_lang$html$Html$button,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$TopLevel),
+															_1: {
+																ctor: '::',
+																_0: _mica5$clarify$View$buttonStyle,
+																_1: {ctor: '[]'}
+															}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('Top Level'),
+															_1: {ctor: '[]'}
+														}),
 													_1: {
 														ctor: '::',
-														_0: A2(_mica5$clarify$View$taskListToHtmlTable, model, sortedTaskViewTasks),
+														_0: A2(
+															_elm_lang$html$Html$br,
+															{ctor: '[]'},
+															{ctor: '[]'}),
 														_1: {
 															ctor: '::',
 															_0: A2(
-																_elm_lang$html$Html$br,
-																{ctor: '[]'},
-																{ctor: '[]'}),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html$text('Estimated minutes for displayed tasks: '),
-																_1: {
+																_elm_lang$html$Html$button,
+																{
 																	ctor: '::',
-																	_0: _mica5$clarify$View$tasksEstimatedMinutesSumText(sortedTaskViewTasks),
+																	_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$UpOneLevel),
 																	_1: {
 																		ctor: '::',
-																		_0: _elm_lang$html$Html$text(
-																			A2(
-																				_elm_lang$core$Basics_ops['++'],
-																				' (',
-																				A2(
-																					_elm_lang$core$Basics_ops['++'],
-																					A2(
-																						_myrho$elm_round$Round$round,
-																						2,
-																						_elm_lang$core$Basics$toFloat(
-																							_mica5$clarify$View$tasksEstimatedMinutesSum(sortedTaskViewTasks)) / 60),
-																					' hours)'))),
+																		_0: _mica5$clarify$View$buttonStyle,
+																		_1: {ctor: '[]'}
+																	}
+																},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text('Up one level'),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$br,
+																	{ctor: '[]'},
+																	{ctor: '[]'}),
+																_1: {
+																	ctor: '::',
+																	_0: A2(
+																		_elm_lang$html$Html$br,
+																		{ctor: '[]'},
+																		{ctor: '[]'}),
+																	_1: {
+																		ctor: '::',
+																		_0: A2(_mica5$clarify$View$taskListToHtmlTable, model, sortedTaskViewTasks),
 																		_1: {ctor: '[]'}
 																	}
 																}
