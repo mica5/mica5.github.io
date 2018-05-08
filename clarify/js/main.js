@@ -11116,7 +11116,11 @@ var _mica5$clarify$View$taskToTableRow = F2(
 										ctor: '::',
 										_0: _elm_lang$html$Html_Events$onClick(
 											_mica5$clarify$Msg$RemoveToday(task.taskID)),
-										_1: {ctor: '[]'}
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('taskButton'),
+											_1: {ctor: '[]'}
+										}
 									}
 								},
 								{
@@ -11132,7 +11136,11 @@ var _mica5$clarify$View$taskToTableRow = F2(
 										ctor: '::',
 										_0: _elm_lang$html$Html_Events$onClick(
 											_mica5$clarify$Msg$AddToday(task.taskID)),
-										_1: {ctor: '[]'}
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('taskButton'),
+											_1: {ctor: '[]'}
+										}
 									}
 								},
 								{
@@ -11151,7 +11159,11 @@ var _mica5$clarify$View$taskToTableRow = F2(
 											ctor: '::',
 											_0: _elm_lang$html$Html_Events$onClick(
 												_mica5$clarify$Msg$DeleteTask(task.taskID)),
-											_1: {ctor: '[]'}
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('taskButton'),
+												_1: {ctor: '[]'}
+											}
 										}
 									},
 									{
@@ -11170,7 +11182,11 @@ var _mica5$clarify$View$taskToTableRow = F2(
 											_1: {
 												ctor: '::',
 												_0: _mica5$clarify$View$buttonStyle,
-												_1: {ctor: '[]'}
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('taskButton'),
+													_1: {ctor: '[]'}
+												}
 											}
 										},
 										{
