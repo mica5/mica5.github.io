@@ -11236,7 +11236,7 @@ var _mica5$clarify$View$taskToTableRow = F2(
 														A2(
 															_elm_lang$core$Basics_ops['++'],
 															_elm_lang$core$Basics$toString(
-																A2(_mica5$clarify$View$countDirectSubtasks, model.tasks, task.parentTaskId)),
+																-1 + A2(_mica5$clarify$View$countDirectSubtasks, model.tasks, task.parentTaskId)),
 															')'))),
 												_1: {ctor: '[]'}
 											}) : _elm_lang$html$Html$text(''),
