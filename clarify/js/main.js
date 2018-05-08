@@ -8726,7 +8726,7 @@ var _mica5$clarify$Update$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{viewingParentTaskId: _p1, newTaskRegister: updatedTaskRegister}),
+						{viewingParentTaskId: _p1, newTaskRegister: updatedTaskRegister, state: 'TaskState'}),
 					{ctor: '[]'});
 			case 'TopLevel':
 				return A2(
@@ -10569,6 +10569,36 @@ var _mica5$clarify$View$taskFilterTextInput = A2(
 		}
 	},
 	{ctor: '[]'});
+var _mica5$clarify$View$saveLifeGoal = function (task) {
+	return A2(
+		_elm_lang$html$Html$form,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Events$onSubmit(_mica5$clarify$Msg$CreateLifeGoal),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(
+				A2(_elm_lang$core$Basics_ops['++'], 'Description: ', task)),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$input,
+					{
+						ctor: '::',
+						_0: _mica5$clarify$View$inputStyle,
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onInput(_mica5$clarify$Msg$UpdateCreateLifeGoalRegister),
+							_1: {ctor: '[]'}
+						}
+					},
+					{ctor: '[]'}),
+				_1: {ctor: '[]'}
+			}
+		});
+};
 var _mica5$clarify$View$tabStyle = _elm_lang$html$Html_Attributes$style(
 	{
 		ctor: '::',
