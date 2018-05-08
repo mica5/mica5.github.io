@@ -11211,11 +11211,43 @@ var _mica5$clarify$View$taskToTableRow = F2(
 										}),
 									_1: {
 										ctor: '::',
-										_0: A2(_mica5$clarify$View$lifeGoalSelectorForEditing, model.life_goals, task),
+										_0: _elm_lang$core$Native_Utils.eq(model.state, 'TodayState') ? A2(
+											_elm_lang$html$Html$button,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Events$onClick(
+													_mica5$clarify$Msg$ViewSubTasks(task.parentTaskId)),
+												_1: {
+													ctor: '::',
+													_0: _mica5$clarify$View$buttonStyle,
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('taskButton'),
+														_1: {ctor: '[]'}
+													}
+												}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(
+													A2(
+														_elm_lang$core$Basics_ops['++'],
+														'View Siblings (',
+														A2(
+															_elm_lang$core$Basics_ops['++'],
+															_elm_lang$core$Basics$toString(
+																A2(_mica5$clarify$View$countDirectSubtasks, model.tasks, task.parentTaskId)),
+															')'))),
+												_1: {ctor: '[]'}
+											}) : _elm_lang$html$Html$text(''),
 										_1: {
 											ctor: '::',
-											_0: _mica5$clarify$View$estimatedMinutesSelector(task),
-											_1: {ctor: '[]'}
+											_0: A2(_mica5$clarify$View$lifeGoalSelectorForEditing, model.life_goals, task),
+											_1: {
+												ctor: '::',
+												_0: _mica5$clarify$View$estimatedMinutesSelector(task),
+												_1: {ctor: '[]'}
+											}
 										}
 									}
 								}
