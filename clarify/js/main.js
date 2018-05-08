@@ -10569,36 +10569,6 @@ var _mica5$clarify$View$taskFilterTextInput = A2(
 		}
 	},
 	{ctor: '[]'});
-var _mica5$clarify$View$saveLifeGoal = function (task) {
-	return A2(
-		_elm_lang$html$Html$form,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Events$onSubmit(_mica5$clarify$Msg$CreateLifeGoal),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text(
-				A2(_elm_lang$core$Basics_ops['++'], 'Description: ', task)),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$input,
-					{
-						ctor: '::',
-						_0: _mica5$clarify$View$inputStyle,
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Events$onInput(_mica5$clarify$Msg$UpdateCreateLifeGoalRegister),
-							_1: {ctor: '[]'}
-						}
-					},
-					{ctor: '[]'}),
-				_1: {ctor: '[]'}
-			}
-		});
-};
 var _mica5$clarify$View$tabStyle = _elm_lang$html$Html_Attributes$style(
 	{
 		ctor: '::',
@@ -11244,15 +11214,10 @@ var _mica5$clarify$View$taskToTableRow = F2(
 								_elm_lang$html$Html$textarea,
 								{
 									ctor: '::',
-									_0: _mica5$clarify$View$inputStyle,
+									_0: _elm_lang$html$Html_Attributes$class('taskText'),
 									_1: {
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$style(
-											{
-												ctor: '::',
-												_0: _seanhess$elm_style$Style$height('100%'),
-												_1: {ctor: '[]'}
-											}),
+										_0: _mica5$clarify$View$inputStyle,
 										_1: {
 											ctor: '::',
 											_0: _elm_lang$html$Html_Attributes$defaultValue(task.title),
@@ -11368,6 +11333,21 @@ var _mica5$clarify$View$lifeGoalElement = function (lifeGoal) {
 					_1: {ctor: '[]'}
 				}
 			}
+		});
+};
+var _mica5$clarify$View$saveLifeGoal = function (task) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _mica5$clarify$View$width100p,
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(
+				A2(_elm_lang$core$Basics_ops['++'], 'Recent entry: ', task)),
+			_1: {ctor: '[]'}
 		});
 };
 var _mica5$clarify$View$fullSizeStyle = _elm_lang$html$Html_Attributes$style(
