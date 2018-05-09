@@ -11529,21 +11529,6 @@ var _mica5$clarify$View$lifeGoalElement = function (lifeGoal) {
 			}
 		});
 };
-var _mica5$clarify$View$saveLifeGoal = function (task) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _mica5$clarify$View$width100p,
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text(
-				A2(_elm_lang$core$Basics_ops['++'], 'Recent entry: ', task)),
-			_1: {ctor: '[]'}
-		});
-};
 var _mica5$clarify$View$fullSizeStyle = _elm_lang$html$Html_Attributes$style(
 	{
 		ctor: '::',
@@ -12123,63 +12108,89 @@ var _mica5$clarify$View$lifeGoalsView = function (model) {
 										_elm_lang$html$Html$form,
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html_Events$onSubmit(_mica5$clarify$Msg$CreateLifeGoal),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Description: '),
+											_0: _elm_lang$html$Html_Events$onInput(_mica5$clarify$Msg$UpdateCreateLifeGoalRegister),
 											_1: {
 												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$input,
-													{
-														ctor: '::',
-														_0: _mica5$clarify$View$inputStyle,
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Events$onInput(_mica5$clarify$Msg$UpdateCreateLifeGoalRegister),
-															_1: {ctor: '[]'}
-														}
-													},
-													{ctor: '[]'}),
-												_1: {
+												_0: _elm_lang$html$Html_Attributes$value(model.new_life_goal_title),
+												_1: {ctor: '[]'}
+											}
+										},
+										{ctor: '[]'}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$div,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(model.new_life_goal_title),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$form,
+												{
 													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$br,
-														{ctor: '[]'},
-														{ctor: '[]'}),
+													_0: _elm_lang$html$Html_Events$onSubmit(_mica5$clarify$Msg$CreateLifeGoal),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Description: '),
 													_1: {
 														ctor: '::',
 														_0: A2(
-															_elm_lang$html$Html$br,
-															{ctor: '[]'},
+															_elm_lang$html$Html$input,
+															{
+																ctor: '::',
+																_0: _mica5$clarify$View$inputStyle,
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Events$onInput(_mica5$clarify$Msg$UpdateCreateLifeGoalRegister),
+																	_1: {ctor: '[]'}
+																}
+															},
 															{ctor: '[]'}),
 														_1: {
 															ctor: '::',
 															_0: A2(
-																_elm_lang$html$Html$button,
-																{
+																_elm_lang$html$Html$br,
+																{ctor: '[]'},
+																{ctor: '[]'}),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$br,
+																	{ctor: '[]'},
+																	{ctor: '[]'}),
+																_1: {
 																	ctor: '::',
-																	_0: _mica5$clarify$View$buttonStyle,
-																	_1: {
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$type_('submit'),
-																		_1: {ctor: '[]'}
-																	}
-																},
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html$text('Create'),
+																	_0: A2(
+																		_elm_lang$html$Html$button,
+																		{
+																			ctor: '::',
+																			_0: _mica5$clarify$View$buttonStyle,
+																			_1: {
+																				ctor: '::',
+																				_0: _elm_lang$html$Html_Attributes$type_('submit'),
+																				_1: {ctor: '[]'}
+																			}
+																		},
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html$text('Create'),
+																			_1: {ctor: '[]'}
+																		}),
 																	_1: {ctor: '[]'}
-																}),
-															_1: {ctor: '[]'}
+																}
+															}
 														}
 													}
-												}
-											}
-										}),
-									_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}
+									}
 								}
 							}
 						}
