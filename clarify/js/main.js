@@ -8690,6 +8690,7 @@ var _mica5$clarify$Msg$HelpState = {ctor: 'HelpState'};
 var _mica5$clarify$Msg$TaskState = {ctor: 'TaskState'};
 var _mica5$clarify$Msg$CreateState = {ctor: 'CreateState'};
 var _mica5$clarify$Msg$TodayState = {ctor: 'TodayState'};
+var _mica5$clarify$Msg$Noop = {ctor: 'Noop'};
 
 var _mica5$clarify$Update$resetFilter = function (settings) {
 	return A2(
@@ -8716,6 +8717,11 @@ var _mica5$clarify$Update$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
 		switch (_p0.ctor) {
+			case 'Noop':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					model,
+					{ctor: '[]'});
 			case 'ViewSubTasks':
 				var _p1 = _p0._0;
 				var newTaskRegister = model.newTaskRegister;
@@ -11574,7 +11580,80 @@ var _mica5$clarify$View$settingsView = function (model) {
 			_1: {
 				ctor: '::',
 				_0: A3(_mica5$clarify$View$settingsButton, model, 'Show debug info', 'Contains all info about your tasks and life goals'),
-				_1: {ctor: '[]'}
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$br,
+						{ctor: '[]'},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('To load a saved model, first click \"Show model here\" (ignore the output), then click \"Load model\", then paste your model there.'),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$br,
+								{ctor: '[]'},
+								{ctor: '[]'}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$button,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$id('loadModelButton'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Load model'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$br,
+										{ctor: '[]'},
+										{ctor: '[]'}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$button,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$Noop),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Show model here:'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$br,
+												{ctor: '[]'},
+												{ctor: '[]'}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$textarea,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$id('model'),
+														_1: {ctor: '[]'}
+													},
+													{ctor: '[]'}),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		});
 };
