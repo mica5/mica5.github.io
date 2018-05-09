@@ -237,7 +237,6 @@ state: String
     </ul>
 </div>
 
-
 <!--
 Local Storage
 -->
@@ -247,6 +246,7 @@ Local Storage
         <li>Local browser storage</li>
         <li>Elm uses ports to communicate with JavaScript</li>
             <ul><li>Ports send or receive messages from JavaScript</li></ul>
+        <li>Flags are like static ports</li>
         <li>Elm:</li>
         <pre class="prettyprint">
 // Elm code for declaring a JS-interaction function.
@@ -262,8 +262,7 @@ updateWithStorage msg model =
         </pre>
         <li>Javscript:</li>
 <pre class="prettyprint">
-// notice here, "ports.save" is what Elm calls
-// when it internally receives the "port save" command
+// Elm calls "ports.save" whenever save is used
 thisElmApp.ports.save.subscribe(function(state) {
     localStorage.setItem('elm-todo-save', JSON.stringify(state));
 });
@@ -282,7 +281,7 @@ https://guide.elm-lang.org/interop/javascript.html
         <li>Keep Elm code separate from JavaScript code</li>
         <li>Elm ensures that it receives correct information</li>
     </ul><ul>
-        <li style="color:blue">Initialize the Elm App from JS code in the HTML file:</li>
+        <li>Initialize the Elm App from JS code in the HTML file:</li>
         <pre class="prettyprint">
 // Load data from browser
 var storedState = localStorage.getItem('elm-todo-save');
@@ -301,7 +300,6 @@ todomvc.ports.save.subscribe(function(state) {
         </pre>
     </ul>
 </div>
-
 
 <!--
 Special Features
