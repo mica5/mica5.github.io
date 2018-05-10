@@ -124,16 +124,45 @@ if (startingState != null && startingState.version == undefined) {
     startingState.settings = [];
 }
 
-// if (startingState.version == 0) {
+// version update from 0 to 1
+if (startingState.version == 0) {
+    startingState.tasks.map(function(task){
+        task.urgent = false;
+        task.important = false;
+    });
+    startingState.newTaskRegister.urgent = false;
+    startingState.newTaskRegister.important = false;
+}
+
+// if (startingState.version == 1) {
 //     // once we move from version 0 to version 1, we need
 //     // to populate this with the updates.
 // }
 
+if (startingState != null) {
+    // allow urls to point directly to tasks (or at least to a task's subtasks)
+    hash = document.location.hash;
+    if (hash != "") {
+        hash_parts = hash.split("=");
+        hash_key = hash_parts[0];
+        if (hash_key == "parent") {
+            taskID = parseInt(hash_parts[1]);
+            startingState.viewingParentTaskId = taskID;
+        }
+    }
+}
+
 
 var clarify_div = document.getElementById("clarify");
 var todomvc = Elm.Main.embed(clarify_div, startingState);
+
+todomvc.ports.updateViewingParentTaskId.subscribe(function(viewingParentTaskId) {
+// port updateViewingParentTaskId: Int -> Cmd msg
+// updateViewingParentTaskId taskID
+    document.location.hash = "parent=" + viewingParentTaskId;
+});
+
 todomvc.ports.save.subscribe(function(state) {
-    console.log("received save message");
     localStorage.setItem('elm-todo-save', JSON.stringify(state));
     var model_textbox = document.getElementById("model");
     if (model_textbox != null) {

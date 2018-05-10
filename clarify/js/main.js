@@ -8584,13 +8584,13 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
-var _mica5$clarify$Model$Task = F6(
-	function (a, b, c, d, e, f) {
-		return {title: a, complete: b, lifeGoalID: c, taskID: d, estimatedMinutes: e, parentTaskId: f};
+var _mica5$clarify$Model$Task = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {title: a, complete: b, lifeGoalID: c, taskID: d, estimatedMinutes: e, parentTaskId: f, important: g, urgent: h};
 	});
 var _mica5$clarify$Model$createEmptyTask = F2(
 	function (taskID, parentTaskID) {
-		return A6(_mica5$clarify$Model$Task, '', false, -1, taskID, 0, parentTaskID);
+		return A8(_mica5$clarify$Model$Task, '', false, -1, taskID, 0, parentTaskID, false, false);
 	});
 var _mica5$clarify$Model$Today = function (a) {
 	return {tasks: a};
@@ -8629,6 +8629,12 @@ var _mica5$clarify$Model$Model = function (a) {
 	};
 };
 
+var _mica5$clarify$Msg$ToggleImportance = function (a) {
+	return {ctor: 'ToggleImportance', _0: a};
+};
+var _mica5$clarify$Msg$ToggleUrgency = function (a) {
+	return {ctor: 'ToggleUrgency', _0: a};
+};
 var _mica5$clarify$Msg$TopLevel = {ctor: 'TopLevel'};
 var _mica5$clarify$Msg$UpOneLevel = {ctor: 'UpOneLevel'};
 var _mica5$clarify$Msg$ViewSubTasks = function (a) {
@@ -8698,620 +8704,6 @@ var _mica5$clarify$Msg$TaskState = {ctor: 'TaskState'};
 var _mica5$clarify$Msg$CreateState = {ctor: 'CreateState'};
 var _mica5$clarify$Msg$TodayState = {ctor: 'TodayState'};
 var _mica5$clarify$Msg$Noop = {ctor: 'Noop'};
-
-var _mica5$clarify$Update$resetFilter = function (settings) {
-	return A2(
-		_elm_lang$core$List$map,
-		function (s) {
-			return A2(_elm_lang$core$String$startsWith, 'filter ', s) ? 'filter ' : s;
-		},
-		settings);
-};
-var _mica5$clarify$Update$sortSettings = {
-	ctor: '::',
-	_0: 'Life Goal',
-	_1: {
-		ctor: '::',
-		_0: 'Estimated Minutes',
-		_1: {
-			ctor: '::',
-			_0: 'Description',
-			_1: {ctor: '[]'}
-		}
-	}
-};
-var _mica5$clarify$Update$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
-			case 'Noop':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					model,
-					{ctor: '[]'});
-			case 'ViewSubTasks':
-				var _p1 = _p0._0;
-				var newTaskRegister = model.newTaskRegister;
-				var updatedTaskRegister = _elm_lang$core$Native_Utils.update(
-					newTaskRegister,
-					{parentTaskId: _p1});
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{viewingParentTaskId: _p1, newTaskRegister: updatedTaskRegister, state: 'TaskState'}),
-					{ctor: '[]'});
-			case 'TopLevel':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{viewingParentTaskId: -1}),
-					{ctor: '[]'});
-			case 'UpOneLevel':
-				var parentTaskInList = A2(
-					_elm_lang$core$List$filter,
-					function (t) {
-						return _elm_lang$core$Native_Utils.eq(t.taskID, model.viewingParentTaskId);
-					},
-					model.tasks);
-				var parentTaskId = function () {
-					var _p2 = _elm_lang$core$List$head(parentTaskInList);
-					if (_p2.ctor === 'Nothing') {
-						return -1;
-					} else {
-						return _p2._0.parentTaskId;
-					}
-				}();
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{viewingParentTaskId: parentTaskId}),
-					{ctor: '[]'});
-			case 'FilterTasks':
-				var settingsWithoutFilter = A2(
-					_elm_lang$core$List$filter,
-					function (s) {
-						return !A2(_elm_lang$core$String$startsWith, 'filter ', s);
-					},
-					model.settings);
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{
-							settings: {
-								ctor: '::',
-								_0: A2(_elm_lang$core$Basics_ops['++'], 'filter ', _p0._0),
-								_1: settingsWithoutFilter
-							}
-						}),
-					{ctor: '[]'});
-			case 'ChangeTaskSorting':
-				var cleanedSettings = A2(
-					_elm_lang$core$List$filter,
-					function (s) {
-						return !A2(_elm_lang$core$List$member, s, _mica5$clarify$Update$sortSettings);
-					},
-					model.settings);
-				var _p3 = _p0._0;
-				if (_p3 === 'None') {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{settings: cleanedSettings}),
-						{ctor: '[]'});
-				} else {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{
-								settings: {ctor: '::', _0: _p3, _1: cleanedSettings}
-							}),
-						{ctor: '[]'});
-				}
-			case 'ToggleSetting':
-				var _p4 = _p0._0;
-				var settings = A2(_elm_lang$core$List$member, _p4, model.settings) ? A2(
-					_elm_lang$core$List$filter,
-					function (s) {
-						return !_elm_lang$core$Native_Utils.eq(s, _p4);
-					},
-					model.settings) : {ctor: '::', _0: _p4, _1: model.settings};
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{settings: settings}),
-					{ctor: '[]'});
-			case 'UpdateCreateLifeGoalRegister':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{
-							new_life_goal_title: _p0._0,
-							debug: _elm_lang$core$Basics$toString(msg)
-						}),
-					{ctor: '[]'});
-			case 'CreateLifeGoal':
-				return _elm_lang$core$Native_Utils.eq(model.new_life_goal_title, '') ? A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					model,
-					{ctor: '[]'}) : A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{
-							life_goals: A2(
-								_elm_lang$core$List$append,
-								model.life_goals,
-								{
-									ctor: '::',
-									_0: A3(
-										_mica5$clarify$Model$LifeGoal,
-										model.new_life_goal_title,
-										{ctor: '[]'},
-										model.lifeGoalID),
-									_1: {ctor: '[]'}
-								}),
-							lifeGoalID: model.lifeGoalID + 1,
-							new_life_goal_title: '',
-							debug: _elm_lang$core$Basics$toString(msg)
-						}),
-					{ctor: '[]'});
-			case 'UpdateTaskGoal':
-				var _p7 = _p0._0;
-				var _p6 = _p0._1;
-				var _p5 = _elm_lang$core$String$toInt(_p6);
-				if (_p5.ctor === 'Err') {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						model,
-						{ctor: '[]'});
-				} else {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{
-								tasks: A2(
-									_elm_lang$core$List$map,
-									function (t) {
-										return (!_elm_lang$core$Native_Utils.eq(t.taskID, _p7)) ? t : _elm_lang$core$Native_Utils.update(
-											t,
-											{lifeGoalID: _p5._0});
-									},
-									model.tasks),
-								debug: A2(
-									_elm_lang$core$Basics_ops['++'],
-									'taskID ',
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										_elm_lang$core$Basics$toString(_p7),
-										A2(_elm_lang$core$Basics_ops['++'], '; goalID ', _p6)))
-							}),
-						{ctor: '[]'});
-				}
-			case 'UpdateTaskRegister':
-				var _p11 = _p0._1;
-				var _p8 = _p0._0;
-				switch (_p8) {
-					case 'estimatedMinutes':
-						var _p9 = _elm_lang$core$String$toInt(_p11);
-						if (_p9.ctor === 'Err') {
-							return A2(
-								_elm_lang$core$Platform_Cmd_ops['!'],
-								model,
-								{ctor: '[]'});
-						} else {
-							var newTaskRegister = model.newTaskRegister;
-							return A2(
-								_elm_lang$core$Platform_Cmd_ops['!'],
-								_elm_lang$core$Native_Utils.update(
-									model,
-									{
-										newTaskRegister: _elm_lang$core$Native_Utils.update(
-											newTaskRegister,
-											{estimatedMinutes: _p9._0})
-									}),
-								{ctor: '[]'});
-						}
-					case 'description':
-						var newTaskRegister = model.newTaskRegister;
-						return A2(
-							_elm_lang$core$Platform_Cmd_ops['!'],
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									newTaskRegister: _elm_lang$core$Native_Utils.update(
-										newTaskRegister,
-										{title: _p11})
-								}),
-							{ctor: '[]'});
-					case 'lifeGoal':
-						var _p10 = _elm_lang$core$String$toInt(_p11);
-						if (_p10.ctor === 'Err') {
-							return A2(
-								_elm_lang$core$Platform_Cmd_ops['!'],
-								model,
-								{ctor: '[]'});
-						} else {
-							var newTaskRegister = model.newTaskRegister;
-							return A2(
-								_elm_lang$core$Platform_Cmd_ops['!'],
-								_elm_lang$core$Native_Utils.update(
-									model,
-									{
-										newTaskRegister: _elm_lang$core$Native_Utils.update(
-											newTaskRegister,
-											{lifeGoalID: _p10._0})
-									}),
-								{ctor: '[]'});
-						}
-					default:
-						return A2(
-							_elm_lang$core$Platform_Cmd_ops['!'],
-							model,
-							{ctor: '[]'});
-				}
-			case 'UpdateTaskDescription':
-				var _p14 = _p0._0;
-				var _p13 = _p0._1;
-				var _p12 = _p13;
-				if (_p12 === '') {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						model,
-						{ctor: '[]'});
-				} else {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{
-								debug: A2(
-									_elm_lang$core$Basics_ops['++'],
-									'taskID ',
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										_elm_lang$core$Basics$toString(_p14),
-										A2(_elm_lang$core$Basics_ops['++'], '; title ', _p13))),
-								tasks: A2(
-									_elm_lang$core$List$map,
-									function (t) {
-										return (!_elm_lang$core$Native_Utils.eq(t.taskID, _p14)) ? t : _elm_lang$core$Native_Utils.update(
-											t,
-											{title: _p13});
-									},
-									model.tasks)
-							}),
-						{ctor: '[]'});
-				}
-			case 'UpdateTaskEstimatedMinutes':
-				var _p18 = _p0._0;
-				var _p17 = _p0._1;
-				var _p15 = _elm_lang$core$String$toInt(_p17);
-				if (_p15.ctor === 'Err') {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						model,
-						{ctor: '[]'});
-				} else {
-					var _p16 = _p15._0;
-					var checkedEstimatedMinutes = (_elm_lang$core$Native_Utils.cmp(_p16, 0) < 0) ? 0 : ((_elm_lang$core$Native_Utils.cmp(_p16, 9999) > 0) ? 9999 : _p16);
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{
-								debug: A2(
-									_elm_lang$core$Basics_ops['++'],
-									'taskID ',
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										_elm_lang$core$Basics$toString(_p18),
-										A2(_elm_lang$core$Basics_ops['++'], '; estMinutesStr ', _p17))),
-								tasks: A2(
-									_elm_lang$core$List$map,
-									function (t) {
-										return (!_elm_lang$core$Native_Utils.eq(t.taskID, _p18)) ? t : _elm_lang$core$Native_Utils.update(
-											t,
-											{estimatedMinutes: checkedEstimatedMinutes});
-									},
-									model.tasks)
-							}),
-						{ctor: '[]'});
-				}
-			case 'CreateTask':
-				if (_elm_lang$core$Native_Utils.eq(model.newTaskRegister.title, '')) {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						model,
-						{ctor: '[]'});
-				} else {
-					var newTaskRegister = model.newTaskRegister;
-					var updatedNewTask = _elm_lang$core$Native_Utils.update(
-						newTaskRegister,
-						{parentTaskId: model.viewingParentTaskId});
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{
-								tasks: A2(
-									_elm_lang$core$List$append,
-									model.tasks,
-									{
-										ctor: '::',
-										_0: updatedNewTask,
-										_1: {ctor: '[]'}
-									}),
-								newTaskRegister: A2(_mica5$clarify$Model$createEmptyTask, model.taskID, 0),
-								taskID: model.taskID + 1,
-								debug: _elm_lang$core$Basics$toString(msg),
-								lifeGoalID: model.lifeGoalID
-							}),
-						{ctor: '[]'});
-				}
-			case 'UpdateLifeGoalDescription':
-				var _p21 = _p0._1;
-				var _p20 = _p0._0;
-				var _p19 = _p21;
-				if (_p19 === '') {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						model,
-						{ctor: '[]'});
-				} else {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{
-								debug: A2(
-									_elm_lang$core$Basics_ops['++'],
-									'lifeGoalID ',
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										_elm_lang$core$Basics$toString(_p20),
-										A2(_elm_lang$core$Basics_ops['++'], '; title ', _p21))),
-								life_goals: A2(
-									_elm_lang$core$List$map,
-									function (g) {
-										return (!_elm_lang$core$Native_Utils.eq(g.id, _p20)) ? g : _elm_lang$core$Native_Utils.update(
-											g,
-											{title: _p21});
-									},
-									model.life_goals)
-							}),
-						{ctor: '[]'});
-				}
-			case 'DeleteLifeGoal':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{
-							debug: _elm_lang$core$Basics$toString(msg),
-							life_goals: A2(
-								_elm_lang$core$List$filter,
-								function (lifeGoal) {
-									return !_elm_lang$core$Native_Utils.eq(lifeGoal.id, _p0._0);
-								},
-								model.life_goals)
-						}),
-					{ctor: '[]'});
-			case 'DeleteTask':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{
-							debug: _elm_lang$core$Basics$toString(msg),
-							tasks: A2(
-								_elm_lang$core$List$filter,
-								function (task) {
-									return !_elm_lang$core$Native_Utils.eq(task.taskID, _p0._0);
-								},
-								model.tasks)
-						}),
-					{ctor: '[]'});
-			case 'AddToday':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{
-							todayTaskIds: {ctor: '::', _0: _p0._0, _1: model.todayTaskIds}
-						}),
-					{ctor: '[]'});
-			case 'RemoveToday':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{
-							todayTaskIds: A2(
-								_elm_lang$core$List$filter,
-								function (tid) {
-									return !_elm_lang$core$Native_Utils.eq(tid, _p0._0);
-								},
-								model.todayTaskIds)
-						}),
-					{ctor: '[]'});
-			case 'MoveTaskDown':
-				var newParentTaskId = A2(
-					_elm_lang$core$Result$withDefault,
-					-1,
-					_elm_lang$core$String$toInt(_p0._1));
-				var updatedTasks = A2(
-					_elm_lang$core$List$map,
-					function (t) {
-						return (_elm_lang$core$Native_Utils.eq(t.taskID, _p0._0) && (!_elm_lang$core$Native_Utils.eq(newParentTaskId, -1))) ? _elm_lang$core$Native_Utils.update(
-							t,
-							{parentTaskId: newParentTaskId}) : t;
-					},
-					model.tasks);
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{tasks: updatedTasks}),
-					{ctor: '[]'});
-			case 'MoveTaskUp':
-				var _p24 = _p0._0;
-				var parentTaskId = function () {
-					var _p22 = _elm_lang$core$List$head(
-						A2(
-							_elm_lang$core$List$filter,
-							function (t) {
-								return _elm_lang$core$Native_Utils.eq(t.taskID, _p24);
-							},
-							model.tasks));
-					if (_p22.ctor === 'Just') {
-						return _p22._0.parentTaskId;
-					} else {
-						return -1;
-					}
-				}();
-				var parentParentTaskId = function () {
-					var _p23 = _elm_lang$core$List$head(
-						A2(
-							_elm_lang$core$List$filter,
-							function (t) {
-								return _elm_lang$core$Native_Utils.eq(t.taskID, parentTaskId);
-							},
-							model.tasks));
-					if (_p23.ctor === 'Just') {
-						return _p23._0.parentTaskId;
-					} else {
-						return -1;
-					}
-				}();
-				var tasks = A2(
-					_elm_lang$core$List$map,
-					function (t) {
-						return _elm_lang$core$Native_Utils.eq(t.taskID, _p24) ? _elm_lang$core$Native_Utils.update(
-							t,
-							{parentTaskId: parentParentTaskId}) : t;
-					},
-					model.tasks);
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{
-							tasks: tasks,
-							debug: A2(
-								_elm_lang$core$Basics_ops['++'],
-								'taskid ',
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									_elm_lang$core$Basics$toString(_p24),
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										', parent task id ',
-										A2(
-											_elm_lang$core$Basics_ops['++'],
-											_elm_lang$core$Basics$toString(parentTaskId),
-											A2(
-												_elm_lang$core$Basics_ops['++'],
-												', parent parent task id ',
-												_elm_lang$core$Basics$toString(parentParentTaskId))))))
-						}),
-					{ctor: '[]'});
-			default:
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{
-							debug: _elm_lang$core$Basics$toString(msg),
-							state: _elm_lang$core$Basics$toString(msg),
-							settings: _mica5$clarify$Update$resetFilter(model.settings)
-						}),
-					{ctor: '[]'});
-		}
-	});
-var _mica5$clarify$Update$findTaskById = F2(
-	function (tasks, taskID) {
-		return _elm_lang$core$List$head(
-			A2(
-				_elm_lang$core$List$filter,
-				function (task) {
-					return !_elm_lang$core$Native_Utils.eq(task.taskID, taskID);
-				},
-				tasks));
-	});
-
-var _mica5$clarify$LocalStore$save = _elm_lang$core$Native_Platform.outgoingPort(
-	'save',
-	function (v) {
-		return {
-			life_goals: _elm_lang$core$Native_List.toArray(v.life_goals).map(
-				function (v) {
-					return {
-						title: v.title,
-						priorities: _elm_lang$core$Native_List.toArray(v.priorities).map(
-							function (v) {
-								return {
-									title: v.title,
-									tasks: _elm_lang$core$Native_List.toArray(v.tasks).map(
-										function (v) {
-											return {title: v.title, complete: v.complete, lifeGoalID: v.lifeGoalID, taskID: v.taskID, estimatedMinutes: v.estimatedMinutes, parentTaskId: v.parentTaskId};
-										}),
-									id: v.id
-								};
-							}),
-						id: v.id
-					};
-				}),
-			todayTaskIds: _elm_lang$core$Native_List.toArray(v.todayTaskIds).map(
-				function (v) {
-					return v;
-				}),
-			tasks: _elm_lang$core$Native_List.toArray(v.tasks).map(
-				function (v) {
-					return {title: v.title, complete: v.complete, lifeGoalID: v.lifeGoalID, taskID: v.taskID, estimatedMinutes: v.estimatedMinutes, parentTaskId: v.parentTaskId};
-				}),
-			debug: v.debug,
-			lifeGoalID: v.lifeGoalID,
-			taskID: v.taskID,
-			new_life_goal_title: v.new_life_goal_title,
-			newTaskRegister: {title: v.newTaskRegister.title, complete: v.newTaskRegister.complete, lifeGoalID: v.newTaskRegister.lifeGoalID, taskID: v.newTaskRegister.taskID, estimatedMinutes: v.newTaskRegister.estimatedMinutes, parentTaskId: v.newTaskRegister.parentTaskId},
-			state: v.state,
-			settings: _elm_lang$core$Native_List.toArray(v.settings).map(
-				function (v) {
-					return v;
-				}),
-			viewingParentTaskId: v.viewingParentTaskId,
-			version: v.version
-		};
-	});
-var _mica5$clarify$LocalStore$updateWithStorage = F2(
-	function (msg, model) {
-		var _p0 = A2(_mica5$clarify$Update$update, msg, model);
-		var newModel = _p0._0;
-		var cmds = _p0._1;
-		return {
-			ctor: '_Tuple2',
-			_0: newModel,
-			_1: _elm_lang$core$Platform_Cmd$batch(
-				{
-					ctor: '::',
-					_0: _mica5$clarify$LocalStore$save(newModel),
-					_1: {
-						ctor: '::',
-						_0: cmds,
-						_1: {ctor: '[]'}
-					}
-				})
-		};
-	});
 
 var _myrho$elm_round$Round$funNum = F3(
 	function (fun, s, fl) {
@@ -10295,6 +9687,49 @@ var _seanhess$elm_style$Style$PrefixSet = F5(
 		return {ms: a, moz: b, o: c, webkit: d, $default: e};
 	});
 
+var _mica5$clarify$View$makeIcon = F2(
+	function (path, msg) {
+		return A2(
+			_elm_lang$html$Html$img,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$src(path),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$height(25),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Events$onClick(msg),
+						_1: {ctor: '[]'}
+					}
+				}
+			},
+			{ctor: '[]'});
+	});
+var _mica5$clarify$View$exclaimRed = function (taskId) {
+	return A2(
+		_mica5$clarify$View$makeIcon,
+		'images/exclaim_red.png',
+		_mica5$clarify$Msg$ToggleImportance(taskId));
+};
+var _mica5$clarify$View$exclaimGray = function (taskId) {
+	return A2(
+		_mica5$clarify$View$makeIcon,
+		'images/exclaim_gray.png',
+		_mica5$clarify$Msg$ToggleImportance(taskId));
+};
+var _mica5$clarify$View$fireIcon = function (taskId) {
+	return A2(
+		_mica5$clarify$View$makeIcon,
+		'images/fire.png',
+		_mica5$clarify$Msg$ToggleUrgency(taskId));
+};
+var _mica5$clarify$View$waterIcon = function (taskId) {
+	return A2(
+		_mica5$clarify$View$makeIcon,
+		'images/water.png',
+		_mica5$clarify$Msg$ToggleUrgency(taskId));
+};
 var _mica5$clarify$View$mainViewHtmlNavigationBar = A2(
 	_elm_lang$html$Html$div,
 	{ctor: '[]'},
@@ -11124,51 +10559,59 @@ var _mica5$clarify$View$taskToTableRow = F2(
 												}),
 											_1: {
 												ctor: '::',
-												_0: _elm_lang$core$Native_Utils.eq(model.state, 'TodayState') ? A2(
-													_elm_lang$html$Html$button,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Events$onClick(
-															_mica5$clarify$Msg$ViewSubTasks(task.parentTaskId)),
-														_1: {
-															ctor: '::',
-															_0: _mica5$clarify$View$buttonStyle,
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$class('taskButton'),
-																_1: {ctor: '[]'}
-															}
-														}
-													},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text(
-															A2(
-																_elm_lang$core$Basics_ops['++'],
-																'View Siblings (',
-																A2(
-																	_elm_lang$core$Basics_ops['++'],
-																	_elm_lang$core$Basics$toString(
-																		-1 + A2(_mica5$clarify$View$countDirectSubtasks, model.tasks, task.parentTaskId)),
-																	')'))),
-														_1: {ctor: '[]'}
-													}) : _elm_lang$html$Html$text(''),
+												_0: (task.important ? _mica5$clarify$View$exclaimRed : _mica5$clarify$View$exclaimGray)(task.taskID),
 												_1: {
 													ctor: '::',
-													_0: A2(_mica5$clarify$View$lifeGoalSelectorForEditing, model.life_goals, task),
+													_0: (task.urgent ? _mica5$clarify$View$fireIcon : _mica5$clarify$View$waterIcon)(task.taskID),
 													_1: {
 														ctor: '::',
-														_0: _mica5$clarify$View$estimatedMinutesSelector(task),
+														_0: _elm_lang$core$Native_Utils.eq(model.state, 'TodayState') ? A2(
+															_elm_lang$html$Html$button,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Events$onClick(
+																	_mica5$clarify$Msg$ViewSubTasks(task.parentTaskId)),
+																_1: {
+																	ctor: '::',
+																	_0: _mica5$clarify$View$buttonStyle,
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$class('taskButton'),
+																		_1: {ctor: '[]'}
+																	}
+																}
+															},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text(
+																	A2(
+																		_elm_lang$core$Basics_ops['++'],
+																		'View Siblings (',
+																		A2(
+																			_elm_lang$core$Basics_ops['++'],
+																			_elm_lang$core$Basics$toString(
+																				-1 + A2(_mica5$clarify$View$countDirectSubtasks, model.tasks, task.parentTaskId)),
+																			')'))),
+																_1: {ctor: '[]'}
+															}) : _elm_lang$html$Html$text(''),
 														_1: {
 															ctor: '::',
-															_0: A2(
-																_elm_lang$html$Html$br,
-																{ctor: '[]'},
-																{ctor: '[]'}),
+															_0: A2(_mica5$clarify$View$lifeGoalSelectorForEditing, model.life_goals, task),
 															_1: {
 																ctor: '::',
-																_0: _elm_lang$html$Html$text('(Minutes)'),
-																_1: {ctor: '[]'}
+																_0: _mica5$clarify$View$estimatedMinutesSelector(task),
+																_1: {
+																	ctor: '::',
+																	_0: A2(
+																		_elm_lang$html$Html$br,
+																		{ctor: '[]'},
+																		{ctor: '[]'}),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html$text('(Minutes)'),
+																		_1: {ctor: '[]'}
+																	}
+																}
 															}
 														}
 													}
@@ -12413,6 +11856,666 @@ var _mica5$clarify$View$view = function (model) {
 		});
 };
 
+var _mica5$clarify$Update$resetFilter = function (settings) {
+	return A2(
+		_elm_lang$core$List$map,
+		function (s) {
+			return A2(_elm_lang$core$String$startsWith, 'filter ', s) ? 'filter ' : s;
+		},
+		settings);
+};
+var _mica5$clarify$Update$sortSettings = {
+	ctor: '::',
+	_0: 'Life Goal',
+	_1: {
+		ctor: '::',
+		_0: 'Estimated Minutes',
+		_1: {
+			ctor: '::',
+			_0: 'Description',
+			_1: {ctor: '[]'}
+		}
+	}
+};
+var _mica5$clarify$Update$findTaskById = F2(
+	function (tasks, taskID) {
+		return _elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$filter,
+				function (task) {
+					return !_elm_lang$core$Native_Utils.eq(task.taskID, taskID);
+				},
+				tasks));
+	});
+var _mica5$clarify$Update$save = _elm_lang$core$Native_Platform.outgoingPort(
+	'save',
+	function (v) {
+		return {
+			life_goals: _elm_lang$core$Native_List.toArray(v.life_goals).map(
+				function (v) {
+					return {
+						title: v.title,
+						priorities: _elm_lang$core$Native_List.toArray(v.priorities).map(
+							function (v) {
+								return {
+									title: v.title,
+									tasks: _elm_lang$core$Native_List.toArray(v.tasks).map(
+										function (v) {
+											return {title: v.title, complete: v.complete, lifeGoalID: v.lifeGoalID, taskID: v.taskID, estimatedMinutes: v.estimatedMinutes, parentTaskId: v.parentTaskId, important: v.important, urgent: v.urgent};
+										}),
+									id: v.id
+								};
+							}),
+						id: v.id
+					};
+				}),
+			todayTaskIds: _elm_lang$core$Native_List.toArray(v.todayTaskIds).map(
+				function (v) {
+					return v;
+				}),
+			tasks: _elm_lang$core$Native_List.toArray(v.tasks).map(
+				function (v) {
+					return {title: v.title, complete: v.complete, lifeGoalID: v.lifeGoalID, taskID: v.taskID, estimatedMinutes: v.estimatedMinutes, parentTaskId: v.parentTaskId, important: v.important, urgent: v.urgent};
+				}),
+			debug: v.debug,
+			lifeGoalID: v.lifeGoalID,
+			taskID: v.taskID,
+			new_life_goal_title: v.new_life_goal_title,
+			newTaskRegister: {title: v.newTaskRegister.title, complete: v.newTaskRegister.complete, lifeGoalID: v.newTaskRegister.lifeGoalID, taskID: v.newTaskRegister.taskID, estimatedMinutes: v.newTaskRegister.estimatedMinutes, parentTaskId: v.newTaskRegister.parentTaskId, important: v.newTaskRegister.important, urgent: v.newTaskRegister.urgent},
+			state: v.state,
+			settings: _elm_lang$core$Native_List.toArray(v.settings).map(
+				function (v) {
+					return v;
+				}),
+			viewingParentTaskId: v.viewingParentTaskId,
+			version: v.version
+		};
+	});
+var _mica5$clarify$Update$updateViewingParentTaskId = _elm_lang$core$Native_Platform.outgoingPort(
+	'updateViewingParentTaskId',
+	function (v) {
+		return v;
+	});
+var _mica5$clarify$Update$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'Noop':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					model,
+					{ctor: '[]'});
+			case 'ToggleImportance':
+				var tasks = A2(
+					_elm_lang$core$List$map,
+					function (t) {
+						return _elm_lang$core$Native_Utils.eq(t.taskID, _p0._0) ? _elm_lang$core$Native_Utils.update(
+							t,
+							{important: !t.important}) : t;
+					},
+					model.tasks);
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{tasks: tasks}),
+					{ctor: '[]'});
+			case 'ToggleUrgency':
+				var tasks = A2(
+					_elm_lang$core$List$map,
+					function (t) {
+						return _elm_lang$core$Native_Utils.eq(t.taskID, _p0._0) ? _elm_lang$core$Native_Utils.update(
+							t,
+							{urgent: !t.urgent}) : t;
+					},
+					model.tasks);
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{tasks: tasks}),
+					{ctor: '[]'});
+			case 'ViewSubTasks':
+				var _p1 = _p0._0;
+				var newTaskRegister = model.newTaskRegister;
+				var updatedTaskRegister = _elm_lang$core$Native_Utils.update(
+					newTaskRegister,
+					{parentTaskId: _p1});
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{viewingParentTaskId: _p1, newTaskRegister: updatedTaskRegister, state: 'TaskState'}),
+					{
+						ctor: '::',
+						_0: _mica5$clarify$Update$updateViewingParentTaskId(_p1),
+						_1: {ctor: '[]'}
+					});
+			case 'TopLevel':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{viewingParentTaskId: -1}),
+					{
+						ctor: '::',
+						_0: _mica5$clarify$Update$updateViewingParentTaskId(-1),
+						_1: {ctor: '[]'}
+					});
+			case 'UpOneLevel':
+				var parentTaskInList = A2(
+					_elm_lang$core$List$filter,
+					function (t) {
+						return _elm_lang$core$Native_Utils.eq(t.taskID, model.viewingParentTaskId);
+					},
+					model.tasks);
+				var parentTaskId = function () {
+					var _p2 = _elm_lang$core$List$head(parentTaskInList);
+					if (_p2.ctor === 'Nothing') {
+						return -1;
+					} else {
+						return _p2._0.parentTaskId;
+					}
+				}();
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{viewingParentTaskId: parentTaskId}),
+					{
+						ctor: '::',
+						_0: _mica5$clarify$Update$updateViewingParentTaskId(parentTaskId),
+						_1: {ctor: '[]'}
+					});
+			case 'FilterTasks':
+				var settingsWithoutFilter = A2(
+					_elm_lang$core$List$filter,
+					function (s) {
+						return !A2(_elm_lang$core$String$startsWith, 'filter ', s);
+					},
+					model.settings);
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							settings: {
+								ctor: '::',
+								_0: A2(_elm_lang$core$Basics_ops['++'], 'filter ', _p0._0),
+								_1: settingsWithoutFilter
+							}
+						}),
+					{ctor: '[]'});
+			case 'ChangeTaskSorting':
+				var cleanedSettings = A2(
+					_elm_lang$core$List$filter,
+					function (s) {
+						return !A2(_elm_lang$core$List$member, s, _mica5$clarify$Update$sortSettings);
+					},
+					model.settings);
+				var _p3 = _p0._0;
+				if (_p3 === 'None') {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{settings: cleanedSettings}),
+						{ctor: '[]'});
+				} else {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								settings: {ctor: '::', _0: _p3, _1: cleanedSettings}
+							}),
+						{ctor: '[]'});
+				}
+			case 'ToggleSetting':
+				var _p4 = _p0._0;
+				var settings = A2(_elm_lang$core$List$member, _p4, model.settings) ? A2(
+					_elm_lang$core$List$filter,
+					function (s) {
+						return !_elm_lang$core$Native_Utils.eq(s, _p4);
+					},
+					model.settings) : {ctor: '::', _0: _p4, _1: model.settings};
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{settings: settings}),
+					{ctor: '[]'});
+			case 'UpdateCreateLifeGoalRegister':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							new_life_goal_title: _p0._0,
+							debug: _elm_lang$core$Basics$toString(msg)
+						}),
+					{ctor: '[]'});
+			case 'CreateLifeGoal':
+				return _elm_lang$core$Native_Utils.eq(model.new_life_goal_title, '') ? A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					model,
+					{ctor: '[]'}) : A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							life_goals: A2(
+								_elm_lang$core$List$append,
+								model.life_goals,
+								{
+									ctor: '::',
+									_0: A3(
+										_mica5$clarify$Model$LifeGoal,
+										model.new_life_goal_title,
+										{ctor: '[]'},
+										model.lifeGoalID),
+									_1: {ctor: '[]'}
+								}),
+							lifeGoalID: model.lifeGoalID + 1,
+							new_life_goal_title: '',
+							debug: _elm_lang$core$Basics$toString(msg)
+						}),
+					{ctor: '[]'});
+			case 'UpdateTaskGoal':
+				var _p7 = _p0._0;
+				var _p6 = _p0._1;
+				var _p5 = _elm_lang$core$String$toInt(_p6);
+				if (_p5.ctor === 'Err') {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{ctor: '[]'});
+				} else {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								tasks: A2(
+									_elm_lang$core$List$map,
+									function (t) {
+										return (!_elm_lang$core$Native_Utils.eq(t.taskID, _p7)) ? t : _elm_lang$core$Native_Utils.update(
+											t,
+											{lifeGoalID: _p5._0});
+									},
+									model.tasks),
+								debug: A2(
+									_elm_lang$core$Basics_ops['++'],
+									'taskID ',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_elm_lang$core$Basics$toString(_p7),
+										A2(_elm_lang$core$Basics_ops['++'], '; goalID ', _p6)))
+							}),
+						{ctor: '[]'});
+				}
+			case 'UpdateTaskRegister':
+				var _p11 = _p0._1;
+				var _p8 = _p0._0;
+				switch (_p8) {
+					case 'estimatedMinutes':
+						var _p9 = _elm_lang$core$String$toInt(_p11);
+						if (_p9.ctor === 'Err') {
+							return A2(
+								_elm_lang$core$Platform_Cmd_ops['!'],
+								model,
+								{ctor: '[]'});
+						} else {
+							var newTaskRegister = model.newTaskRegister;
+							return A2(
+								_elm_lang$core$Platform_Cmd_ops['!'],
+								_elm_lang$core$Native_Utils.update(
+									model,
+									{
+										newTaskRegister: _elm_lang$core$Native_Utils.update(
+											newTaskRegister,
+											{estimatedMinutes: _p9._0})
+									}),
+								{ctor: '[]'});
+						}
+					case 'description':
+						var newTaskRegister = model.newTaskRegister;
+						return A2(
+							_elm_lang$core$Platform_Cmd_ops['!'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									newTaskRegister: _elm_lang$core$Native_Utils.update(
+										newTaskRegister,
+										{title: _p11})
+								}),
+							{ctor: '[]'});
+					case 'lifeGoal':
+						var _p10 = _elm_lang$core$String$toInt(_p11);
+						if (_p10.ctor === 'Err') {
+							return A2(
+								_elm_lang$core$Platform_Cmd_ops['!'],
+								model,
+								{ctor: '[]'});
+						} else {
+							var newTaskRegister = model.newTaskRegister;
+							return A2(
+								_elm_lang$core$Platform_Cmd_ops['!'],
+								_elm_lang$core$Native_Utils.update(
+									model,
+									{
+										newTaskRegister: _elm_lang$core$Native_Utils.update(
+											newTaskRegister,
+											{lifeGoalID: _p10._0})
+									}),
+								{ctor: '[]'});
+						}
+					default:
+						return A2(
+							_elm_lang$core$Platform_Cmd_ops['!'],
+							model,
+							{ctor: '[]'});
+				}
+			case 'UpdateTaskDescription':
+				var _p14 = _p0._0;
+				var _p13 = _p0._1;
+				var _p12 = _p13;
+				if (_p12 === '') {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{ctor: '[]'});
+				} else {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								debug: A2(
+									_elm_lang$core$Basics_ops['++'],
+									'taskID ',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_elm_lang$core$Basics$toString(_p14),
+										A2(_elm_lang$core$Basics_ops['++'], '; title ', _p13))),
+								tasks: A2(
+									_elm_lang$core$List$map,
+									function (t) {
+										return (!_elm_lang$core$Native_Utils.eq(t.taskID, _p14)) ? t : _elm_lang$core$Native_Utils.update(
+											t,
+											{title: _p13});
+									},
+									model.tasks)
+							}),
+						{ctor: '[]'});
+				}
+			case 'UpdateTaskEstimatedMinutes':
+				var _p18 = _p0._0;
+				var _p17 = _p0._1;
+				var _p15 = _elm_lang$core$String$toInt(_p17);
+				if (_p15.ctor === 'Err') {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{ctor: '[]'});
+				} else {
+					var _p16 = _p15._0;
+					var checkedEstimatedMinutes = (_elm_lang$core$Native_Utils.cmp(_p16, 0) < 0) ? 0 : ((_elm_lang$core$Native_Utils.cmp(_p16, 9999) > 0) ? 9999 : _p16);
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								debug: A2(
+									_elm_lang$core$Basics_ops['++'],
+									'taskID ',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_elm_lang$core$Basics$toString(_p18),
+										A2(_elm_lang$core$Basics_ops['++'], '; estMinutesStr ', _p17))),
+								tasks: A2(
+									_elm_lang$core$List$map,
+									function (t) {
+										return (!_elm_lang$core$Native_Utils.eq(t.taskID, _p18)) ? t : _elm_lang$core$Native_Utils.update(
+											t,
+											{estimatedMinutes: checkedEstimatedMinutes});
+									},
+									model.tasks)
+							}),
+						{ctor: '[]'});
+				}
+			case 'CreateTask':
+				if (_elm_lang$core$Native_Utils.eq(model.newTaskRegister.title, '')) {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{ctor: '[]'});
+				} else {
+					var newTaskRegister = model.newTaskRegister;
+					var updatedNewTask = _elm_lang$core$Native_Utils.update(
+						newTaskRegister,
+						{parentTaskId: model.viewingParentTaskId});
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								tasks: A2(
+									_elm_lang$core$List$append,
+									model.tasks,
+									{
+										ctor: '::',
+										_0: updatedNewTask,
+										_1: {ctor: '[]'}
+									}),
+								newTaskRegister: A2(_mica5$clarify$Model$createEmptyTask, model.taskID, 0),
+								taskID: model.taskID + 1,
+								debug: _elm_lang$core$Basics$toString(msg),
+								lifeGoalID: model.lifeGoalID
+							}),
+						{ctor: '[]'});
+				}
+			case 'UpdateLifeGoalDescription':
+				var _p21 = _p0._1;
+				var _p20 = _p0._0;
+				var _p19 = _p21;
+				if (_p19 === '') {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{ctor: '[]'});
+				} else {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								debug: A2(
+									_elm_lang$core$Basics_ops['++'],
+									'lifeGoalID ',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_elm_lang$core$Basics$toString(_p20),
+										A2(_elm_lang$core$Basics_ops['++'], '; title ', _p21))),
+								life_goals: A2(
+									_elm_lang$core$List$map,
+									function (g) {
+										return (!_elm_lang$core$Native_Utils.eq(g.id, _p20)) ? g : _elm_lang$core$Native_Utils.update(
+											g,
+											{title: _p21});
+									},
+									model.life_goals)
+							}),
+						{ctor: '[]'});
+				}
+			case 'DeleteLifeGoal':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							debug: _elm_lang$core$Basics$toString(msg),
+							life_goals: A2(
+								_elm_lang$core$List$filter,
+								function (lifeGoal) {
+									return !_elm_lang$core$Native_Utils.eq(lifeGoal.id, _p0._0);
+								},
+								model.life_goals)
+						}),
+					{ctor: '[]'});
+			case 'DeleteTask':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							debug: _elm_lang$core$Basics$toString(msg),
+							tasks: A2(
+								_elm_lang$core$List$filter,
+								function (task) {
+									return !_elm_lang$core$Native_Utils.eq(task.taskID, _p0._0);
+								},
+								model.tasks)
+						}),
+					{ctor: '[]'});
+			case 'AddToday':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							todayTaskIds: {ctor: '::', _0: _p0._0, _1: model.todayTaskIds}
+						}),
+					{ctor: '[]'});
+			case 'RemoveToday':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							todayTaskIds: A2(
+								_elm_lang$core$List$filter,
+								function (tid) {
+									return !_elm_lang$core$Native_Utils.eq(tid, _p0._0);
+								},
+								model.todayTaskIds)
+						}),
+					{ctor: '[]'});
+			case 'MoveTaskDown':
+				var newParentTaskId = A2(
+					_elm_lang$core$Result$withDefault,
+					-1,
+					_elm_lang$core$String$toInt(_p0._1));
+				var updatedTasks = A2(
+					_elm_lang$core$List$map,
+					function (t) {
+						return (_elm_lang$core$Native_Utils.eq(t.taskID, _p0._0) && (!_elm_lang$core$Native_Utils.eq(newParentTaskId, -1))) ? _elm_lang$core$Native_Utils.update(
+							t,
+							{parentTaskId: newParentTaskId}) : t;
+					},
+					model.tasks);
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{tasks: updatedTasks}),
+					{ctor: '[]'});
+			case 'MoveTaskUp':
+				var _p24 = _p0._0;
+				var parentTaskId = function () {
+					var _p22 = _elm_lang$core$List$head(
+						A2(
+							_elm_lang$core$List$filter,
+							function (t) {
+								return _elm_lang$core$Native_Utils.eq(t.taskID, _p24);
+							},
+							model.tasks));
+					if (_p22.ctor === 'Just') {
+						return _p22._0.parentTaskId;
+					} else {
+						return -1;
+					}
+				}();
+				var parentParentTaskId = function () {
+					var _p23 = _elm_lang$core$List$head(
+						A2(
+							_elm_lang$core$List$filter,
+							function (t) {
+								return _elm_lang$core$Native_Utils.eq(t.taskID, parentTaskId);
+							},
+							model.tasks));
+					if (_p23.ctor === 'Just') {
+						return _p23._0.parentTaskId;
+					} else {
+						return -1;
+					}
+				}();
+				var tasks = A2(
+					_elm_lang$core$List$map,
+					function (t) {
+						return _elm_lang$core$Native_Utils.eq(t.taskID, _p24) ? _elm_lang$core$Native_Utils.update(
+							t,
+							{parentTaskId: parentParentTaskId}) : t;
+					},
+					model.tasks);
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							tasks: tasks,
+							debug: A2(
+								_elm_lang$core$Basics_ops['++'],
+								'taskid ',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									_elm_lang$core$Basics$toString(_p24),
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										', parent task id ',
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											_elm_lang$core$Basics$toString(parentTaskId),
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												', parent parent task id ',
+												_elm_lang$core$Basics$toString(parentParentTaskId))))))
+						}),
+					{ctor: '[]'});
+			default:
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							debug: _elm_lang$core$Basics$toString(msg),
+							state: _elm_lang$core$Basics$toString(msg),
+							settings: _mica5$clarify$Update$resetFilter(model.settings)
+						}),
+					{ctor: '[]'});
+		}
+	});
+var _mica5$clarify$Update$updateWithStorage = F2(
+	function (msg, model) {
+		var _p25 = A2(_mica5$clarify$Update$update, msg, model);
+		var newModel = _p25._0;
+		var cmds = _p25._1;
+		return {
+			ctor: '_Tuple2',
+			_0: newModel,
+			_1: _elm_lang$core$Platform_Cmd$batch(
+				{
+					ctor: '::',
+					_0: _mica5$clarify$Update$save(newModel),
+					_1: {
+						ctor: '::',
+						_0: cmds,
+						_1: {ctor: '[]'}
+					}
+				})
+		};
+	});
+
 var _mica5$clarify$Main$last = function (list) {
 	last:
 	while (true) {
@@ -12451,10 +12554,10 @@ var _mica5$clarify$Main$defaultModel = _mica5$clarify$Model$Model(
 	{ctor: '[]'})(
 	{
 		ctor: '::',
-		_0: A6(_mica5$clarify$Model$Task, 'clean desk', false, 0, 0, 0, -1),
+		_0: A8(_mica5$clarify$Model$Task, 'clean desk', false, 0, 0, 0, -1, false, false),
 		_1: {
 			ctor: '::',
-			_0: A6(_mica5$clarify$Model$Task, 'vacuum room', false, 0, 1, 0, -1),
+			_0: A8(_mica5$clarify$Model$Task, 'vacuum room', false, 0, 1, 0, -1, false, false),
 			_1: {ctor: '[]'}
 		}
 	})('')(2)(3)('')(
@@ -12471,7 +12574,7 @@ var _mica5$clarify$Main$init = function (savedModel) {
 var _mica5$clarify$Main$main = _elm_lang$html$Html$programWithFlags(
 	{
 		init: _mica5$clarify$Main$init,
-		update: _mica5$clarify$LocalStore$updateWithStorage,
+		update: _mica5$clarify$Update$updateWithStorage,
 		view: _mica5$clarify$View$view,
 		subscriptions: function (_p1) {
 			return _elm_lang$core$Platform_Sub$none;
@@ -12546,26 +12649,36 @@ var _mica5$clarify$Main$main = _elm_lang$html$Html$programWithFlags(
 																											function (estimatedMinutes) {
 																												return A2(
 																													_elm_lang$core$Json_Decode$andThen,
-																													function (lifeGoalID) {
+																													function (important) {
 																														return A2(
 																															_elm_lang$core$Json_Decode$andThen,
-																															function (parentTaskId) {
+																															function (lifeGoalID) {
 																																return A2(
 																																	_elm_lang$core$Json_Decode$andThen,
-																																	function (taskID) {
+																																	function (parentTaskId) {
 																																		return A2(
 																																			_elm_lang$core$Json_Decode$andThen,
-																																			function (title) {
-																																				return _elm_lang$core$Json_Decode$succeed(
-																																					{complete: complete, estimatedMinutes: estimatedMinutes, lifeGoalID: lifeGoalID, parentTaskId: parentTaskId, taskID: taskID, title: title});
+																																			function (taskID) {
+																																				return A2(
+																																					_elm_lang$core$Json_Decode$andThen,
+																																					function (title) {
+																																						return A2(
+																																							_elm_lang$core$Json_Decode$andThen,
+																																							function (urgent) {
+																																								return _elm_lang$core$Json_Decode$succeed(
+																																									{complete: complete, estimatedMinutes: estimatedMinutes, important: important, lifeGoalID: lifeGoalID, parentTaskId: parentTaskId, taskID: taskID, title: title, urgent: urgent});
+																																							},
+																																							A2(_elm_lang$core$Json_Decode$field, 'urgent', _elm_lang$core$Json_Decode$bool));
+																																					},
+																																					A2(_elm_lang$core$Json_Decode$field, 'title', _elm_lang$core$Json_Decode$string));
 																																			},
-																																			A2(_elm_lang$core$Json_Decode$field, 'title', _elm_lang$core$Json_Decode$string));
+																																			A2(_elm_lang$core$Json_Decode$field, 'taskID', _elm_lang$core$Json_Decode$int));
 																																	},
-																																	A2(_elm_lang$core$Json_Decode$field, 'taskID', _elm_lang$core$Json_Decode$int));
+																																	A2(_elm_lang$core$Json_Decode$field, 'parentTaskId', _elm_lang$core$Json_Decode$int));
 																															},
-																															A2(_elm_lang$core$Json_Decode$field, 'parentTaskId', _elm_lang$core$Json_Decode$int));
+																															A2(_elm_lang$core$Json_Decode$field, 'lifeGoalID', _elm_lang$core$Json_Decode$int));
 																													},
-																													A2(_elm_lang$core$Json_Decode$field, 'lifeGoalID', _elm_lang$core$Json_Decode$int));
+																													A2(_elm_lang$core$Json_Decode$field, 'important', _elm_lang$core$Json_Decode$bool));
 																											},
 																											A2(_elm_lang$core$Json_Decode$field, 'estimatedMinutes', _elm_lang$core$Json_Decode$int));
 																									},
@@ -12593,26 +12706,36 @@ var _mica5$clarify$Main$main = _elm_lang$html$Html$programWithFlags(
 																function (estimatedMinutes) {
 																	return A2(
 																		_elm_lang$core$Json_Decode$andThen,
-																		function (lifeGoalID) {
+																		function (important) {
 																			return A2(
 																				_elm_lang$core$Json_Decode$andThen,
-																				function (parentTaskId) {
+																				function (lifeGoalID) {
 																					return A2(
 																						_elm_lang$core$Json_Decode$andThen,
-																						function (taskID) {
+																						function (parentTaskId) {
 																							return A2(
 																								_elm_lang$core$Json_Decode$andThen,
-																								function (title) {
-																									return _elm_lang$core$Json_Decode$succeed(
-																										{complete: complete, estimatedMinutes: estimatedMinutes, lifeGoalID: lifeGoalID, parentTaskId: parentTaskId, taskID: taskID, title: title});
+																								function (taskID) {
+																									return A2(
+																										_elm_lang$core$Json_Decode$andThen,
+																										function (title) {
+																											return A2(
+																												_elm_lang$core$Json_Decode$andThen,
+																												function (urgent) {
+																													return _elm_lang$core$Json_Decode$succeed(
+																														{complete: complete, estimatedMinutes: estimatedMinutes, important: important, lifeGoalID: lifeGoalID, parentTaskId: parentTaskId, taskID: taskID, title: title, urgent: urgent});
+																												},
+																												A2(_elm_lang$core$Json_Decode$field, 'urgent', _elm_lang$core$Json_Decode$bool));
+																										},
+																										A2(_elm_lang$core$Json_Decode$field, 'title', _elm_lang$core$Json_Decode$string));
 																								},
-																								A2(_elm_lang$core$Json_Decode$field, 'title', _elm_lang$core$Json_Decode$string));
+																								A2(_elm_lang$core$Json_Decode$field, 'taskID', _elm_lang$core$Json_Decode$int));
 																						},
-																						A2(_elm_lang$core$Json_Decode$field, 'taskID', _elm_lang$core$Json_Decode$int));
+																						A2(_elm_lang$core$Json_Decode$field, 'parentTaskId', _elm_lang$core$Json_Decode$int));
 																				},
-																				A2(_elm_lang$core$Json_Decode$field, 'parentTaskId', _elm_lang$core$Json_Decode$int));
+																				A2(_elm_lang$core$Json_Decode$field, 'lifeGoalID', _elm_lang$core$Json_Decode$int));
 																		},
-																		A2(_elm_lang$core$Json_Decode$field, 'lifeGoalID', _elm_lang$core$Json_Decode$int));
+																		A2(_elm_lang$core$Json_Decode$field, 'important', _elm_lang$core$Json_Decode$bool));
 																},
 																A2(_elm_lang$core$Json_Decode$field, 'estimatedMinutes', _elm_lang$core$Json_Decode$int));
 														},
@@ -12666,26 +12789,36 @@ var _mica5$clarify$Main$main = _elm_lang$html$Html$programWithFlags(
 																									function (estimatedMinutes) {
 																										return A2(
 																											_elm_lang$core$Json_Decode$andThen,
-																											function (lifeGoalID) {
+																											function (important) {
 																												return A2(
 																													_elm_lang$core$Json_Decode$andThen,
-																													function (parentTaskId) {
+																													function (lifeGoalID) {
 																														return A2(
 																															_elm_lang$core$Json_Decode$andThen,
-																															function (taskID) {
+																															function (parentTaskId) {
 																																return A2(
 																																	_elm_lang$core$Json_Decode$andThen,
-																																	function (title) {
-																																		return _elm_lang$core$Json_Decode$succeed(
-																																			{complete: complete, estimatedMinutes: estimatedMinutes, lifeGoalID: lifeGoalID, parentTaskId: parentTaskId, taskID: taskID, title: title});
+																																	function (taskID) {
+																																		return A2(
+																																			_elm_lang$core$Json_Decode$andThen,
+																																			function (title) {
+																																				return A2(
+																																					_elm_lang$core$Json_Decode$andThen,
+																																					function (urgent) {
+																																						return _elm_lang$core$Json_Decode$succeed(
+																																							{complete: complete, estimatedMinutes: estimatedMinutes, important: important, lifeGoalID: lifeGoalID, parentTaskId: parentTaskId, taskID: taskID, title: title, urgent: urgent});
+																																					},
+																																					A2(_elm_lang$core$Json_Decode$field, 'urgent', _elm_lang$core$Json_Decode$bool));
+																																			},
+																																			A2(_elm_lang$core$Json_Decode$field, 'title', _elm_lang$core$Json_Decode$string));
 																																	},
-																																	A2(_elm_lang$core$Json_Decode$field, 'title', _elm_lang$core$Json_Decode$string));
+																																	A2(_elm_lang$core$Json_Decode$field, 'taskID', _elm_lang$core$Json_Decode$int));
 																															},
-																															A2(_elm_lang$core$Json_Decode$field, 'taskID', _elm_lang$core$Json_Decode$int));
+																															A2(_elm_lang$core$Json_Decode$field, 'parentTaskId', _elm_lang$core$Json_Decode$int));
 																													},
-																													A2(_elm_lang$core$Json_Decode$field, 'parentTaskId', _elm_lang$core$Json_Decode$int));
+																													A2(_elm_lang$core$Json_Decode$field, 'lifeGoalID', _elm_lang$core$Json_Decode$int));
 																											},
-																											A2(_elm_lang$core$Json_Decode$field, 'lifeGoalID', _elm_lang$core$Json_Decode$int));
+																											A2(_elm_lang$core$Json_Decode$field, 'important', _elm_lang$core$Json_Decode$bool));
 																									},
 																									A2(_elm_lang$core$Json_Decode$field, 'estimatedMinutes', _elm_lang$core$Json_Decode$int));
 																							},
