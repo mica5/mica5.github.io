@@ -12562,7 +12562,7 @@ var _mica5$clarify$Main$defaultModel = _mica5$clarify$Model$Model(
 		}
 	})('')(2)(3)('')(
 	A2(_mica5$clarify$Model$createEmptyTask, 2, -1))('TodayState')(
-	{ctor: '[]'})(-1)(0);
+	{ctor: '[]'})(-1)(1);
 var _mica5$clarify$Main$init = function (savedModel) {
 	return {
 		ctor: '_Tuple2',
