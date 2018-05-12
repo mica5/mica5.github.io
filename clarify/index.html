@@ -20,6 +20,9 @@
     .taskButtons {
         border-radius: 0px 0px 0px 5px;
     }
+
+
+    /* task text input boxes */
     .taskText {
         border-radius: 0px 5px 5px 0px;
     }
@@ -27,10 +30,15 @@
         font-weight:bold;
         font-size:15px;
         background-color:#F4E5FF;
+
+        width: 99%;
+        height: 216px;
     }
     textarea.taskText:focus {
         background-color:white;
     }
+
+
     button.taskButton {
         /* make the task buttons all the same width */
         width: 100%;
@@ -135,10 +143,17 @@ if (startingState.version == 0) {
     startingState.version = 1;
 }
 
-// if (startingState.version == 1) {
+// version update from 1 to 2
+if (startingState.version == 1) {
+    startingState.version = 2;
+    startingState.completed_tasks = [];
+}
+
+// version update from 2 to 3
+// if (startingState.version == 2) {
 //     // once we move from version 0 to version 1, we need
 //     // to populate this with the updates.
-//     startingState.version = 2;
+//     startingState.version = 3;
 // }
 
 if (startingState != null) {
