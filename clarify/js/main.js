@@ -11578,13 +11578,13 @@ var _mica5$clarify$View$taskView = F2(
 																						{ctor: '[]'},
 																						{
 																							ctor: '::',
-																							_0: _mica5$clarify$View$inlineBlueH2('Parent Tasks:'),
+																							_0: _mica5$clarify$View$inlineBlueH2('Hierarchy above current subtask view:'),
 																							_1: {
 																								ctor: '::',
 																								_0: A3(_mica5$clarify$View$taskListToHtmlTable, model, parentTasks, completed),
 																								_1: {
 																									ctor: '::',
-																									_0: _mica5$clarify$View$inlineBlueH2('Current depth subtasks:'),
+																									_0: _mica5$clarify$View$inlineBlueH2('Subtasks:'),
 																									_1: {ctor: '[]'}
 																								}
 																							}
