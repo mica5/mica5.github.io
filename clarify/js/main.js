@@ -11226,6 +11226,26 @@ var _mica5$clarify$View$taskListToHtmlTable = F3(
 					tasks)
 			});
 	});
+var _mica5$clarify$View$topLevelButton = A2(
+	_elm_lang$html$Html$button,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$TopLevel),
+		_1: {
+			ctor: '::',
+			_0: _mica5$clarify$View$buttonStyle,
+			_1: {
+				ctor: '::',
+				_0: _mica5$clarify$View$width100p,
+				_1: {ctor: '[]'}
+			}
+		}
+	},
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html$text('Top Level'),
+		_1: {ctor: '[]'}
+	});
 var _mica5$clarify$View$lifeGoalElement = function (lifeGoal) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -11395,7 +11415,23 @@ var _mica5$clarify$View$settingsView = function (model) {
 };
 var _mica5$clarify$View$taskView = F2(
 	function (model, completed) {
+		var parentTitleStrLength = 20;
 		var parentTasks = A2(_mica5$clarify$View$getParentTasks, model.tasks, model.viewingParentTaskId);
+		var lowestParentTaskTitleSummary = function () {
+			var _p5 = _elm_lang$core$List$head(
+				_elm_lang$core$List$reverse(parentTasks));
+			if (_p5.ctor === 'Nothing') {
+				return '';
+			} else {
+				var _p6 = _p5._0;
+				return (_elm_lang$core$Native_Utils.cmp(
+					_elm_lang$core$String$length(_p6.title),
+					parentTitleStrLength) > 0) ? A2(
+					_elm_lang$core$Basics_ops['++'],
+					A3(_elm_lang$core$String$slice, 0, parentTitleStrLength, _p6.title),
+					'...') : _p6.title;
+			}
+		}();
 		var tasks = (!completed) ? model.tasks : model.completed_tasks;
 		var subtaskMode = A2(_elm_lang$core$List$member, 'Subtask Mode', model.settings);
 		var allTasksMode = !subtaskMode;
@@ -11424,101 +11460,123 @@ var _mica5$clarify$View$taskView = F2(
 				_elm_lang$core$List$append,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('Estimated minutes for displayed tasks (not including visible parent tasks): '),
-					_1: {
-						ctor: '::',
-						_0: _mica5$clarify$View$tasksEstimatedMinutesSumText(sortedTaskViewTasks),
-						_1: {
+					_0: ((!completed) && (subtaskMode && (_elm_lang$core$Native_Utils.cmp(
+						_elm_lang$core$List$length(parentTasks),
+						0) > 0))) ? A2(
+						_elm_lang$html$Html$div,
+						{ctor: '[]'},
+						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									' (',
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										A2(
-											_myrho$elm_round$Round$round,
-											2,
-											_elm_lang$core$Basics$toFloat(
-												_mica5$clarify$View$tasksEstimatedMinutesSum(sortedTaskViewTasks)) / 60),
-										' hours)'))),
+							_0: _mica5$clarify$View$topLevelButton,
 							_1: {
 								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$br,
-									{ctor: '[]'},
-									{ctor: '[]'}),
+								_0: _mica5$clarify$View$inlineBlueH2('Hierarchy above current subtask view:'),
 								_1: {
 									ctor: '::',
-									_0: _mica5$clarify$View$sortBySelectorButtons(model),
+									_0: A3(_mica5$clarify$View$taskListToHtmlTable, model, parentTasks, completed),
 									_1: {
 										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$br,
-											{ctor: '[]'},
-											{ctor: '[]'}),
+										_0: _mica5$clarify$View$inlineBlueH2(
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												'Subtasks of \"',
+												A2(_elm_lang$core$Basics_ops['++'], lowestParentTaskTitleSummary, '\":'))),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}) : _elm_lang$html$Html$text(''),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Estimated minutes for displayed tasks (not including visible parent tasks): '),
+						_1: {
+							ctor: '::',
+							_0: _mica5$clarify$View$tasksEstimatedMinutesSumText(sortedTaskViewTasks),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										' (',
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											A2(
+												_myrho$elm_round$Round$round,
+												2,
+												_elm_lang$core$Basics$toFloat(
+													_mica5$clarify$View$tasksEstimatedMinutesSum(sortedTaskViewTasks)) / 60),
+											' hours)'))),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$br,
+										{ctor: '[]'},
+										{ctor: '[]'}),
+									_1: {
+										ctor: '::',
+										_0: _mica5$clarify$View$sortBySelectorButtons(model),
 										_1: {
 											ctor: '::',
 											_0: A2(
-												_elm_lang$html$Html$button,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$ToggleSubtaskViewMode),
-													_1: {
-														ctor: '::',
-														_0: _mica5$clarify$View$buttonStyle,
-														_1: {ctor: '[]'}
-													}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text(
-														subtaskMode ? 'Switch to All-Task Mode' : 'Switch to Subtask Mode'),
-													_1: {ctor: '[]'}
-												}),
+												_elm_lang$html$Html$br,
+												{ctor: '[]'},
+												{ctor: '[]'}),
 											_1: {
 												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$br,
-													{ctor: '[]'},
-													{ctor: '[]'}),
+												_0: _elm_lang$html$Html$text('Filter Tasks: '),
 												_1: {
 													ctor: '::',
-													_0: _elm_lang$html$Html$text('Filter Tasks: '),
+													_0: _mica5$clarify$View$taskFilterTextInput,
 													_1: {
 														ctor: '::',
-														_0: _mica5$clarify$View$taskFilterTextInput,
+														_0: A2(
+															_elm_lang$html$Html$br,
+															{ctor: '[]'},
+															{ctor: '[]'}),
 														_1: {
 															ctor: '::',
 															_0: A2(
-																_elm_lang$html$Html$br,
-																{ctor: '[]'},
-																{ctor: '[]'}),
+																_elm_lang$html$Html$button,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$ToggleSubtaskViewMode),
+																	_1: {
+																		ctor: '::',
+																		_0: _mica5$clarify$View$buttonStyle,
+																		_1: {ctor: '[]'}
+																	}
+																},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text(
+																		subtaskMode ? 'Switch to All-Task Mode' : 'Switch to Subtask Mode'),
+																	_1: {ctor: '[]'}
+																}),
 															_1: {
 																ctor: '::',
-																_0: completed ? A2(
-																	_elm_lang$html$Html$span,
-																	{
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$style(
-																			{
-																				ctor: '::',
-																				_0: {ctor: '_Tuple2', _0: 'color', _1: 'red'},
-																				_1: {ctor: '[]'}
-																			}),
-																		_1: {ctor: '[]'}
-																	},
-																	{
-																		ctor: '::',
-																		_0: _elm_lang$html$Html$text('WARNING: Fields cannot be edited on this page! Only deleted or Un-completed!'),
-																		_1: {ctor: '[]'}
-																	}) : _elm_lang$html$Html$text(''),
+																_0: A2(
+																	_elm_lang$html$Html$br,
+																	{ctor: '[]'},
+																	{ctor: '[]'}),
 																_1: {
 																	ctor: '::',
-																	_0: A2(
-																		_elm_lang$html$Html$br,
-																		{ctor: '[]'},
-																		{ctor: '[]'}),
+																	_0: completed ? A2(
+																		_elm_lang$html$Html$span,
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Attributes$style(
+																				{
+																					ctor: '::',
+																					_0: {ctor: '_Tuple2', _0: 'color', _1: 'red'},
+																					_1: {ctor: '[]'}
+																				}),
+																			_1: {ctor: '[]'}
+																		},
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html$text('WARNING: Fields cannot be edited on this page! Only deleted or Un-completed!'),
+																			_1: {ctor: '[]'}
+																		}) : _elm_lang$html$Html$text(''),
 																	_1: {
 																		ctor: '::',
 																		_0: A2(
@@ -11528,67 +11586,34 @@ var _mica5$clarify$View$taskView = F2(
 																		_1: {
 																			ctor: '::',
 																			_0: A2(
-																				_elm_lang$html$Html$button,
-																				{
-																					ctor: '::',
-																					_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$TopLevel),
-																					_1: {
-																						ctor: '::',
-																						_0: _mica5$clarify$View$buttonStyle,
-																						_1: {
-																							ctor: '::',
-																							_0: _mica5$clarify$View$width100p,
-																							_1: {ctor: '[]'}
-																						}
-																					}
-																				},
-																				{
-																					ctor: '::',
-																					_0: _elm_lang$html$Html$text('Top Level'),
-																					_1: {ctor: '[]'}
-																				}),
+																				_elm_lang$html$Html$br,
+																				{ctor: '[]'},
+																				{ctor: '[]'}),
 																			_1: {
 																				ctor: '::',
-																				_0: A2(
-																					_elm_lang$html$Html$button,
-																					{
-																						ctor: '::',
-																						_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$UpOneLevel),
-																						_1: {
-																							ctor: '::',
-																							_0: _mica5$clarify$View$buttonStyle,
-																							_1: {
-																								ctor: '::',
-																								_0: _mica5$clarify$View$width100p,
-																								_1: {ctor: '[]'}
-																							}
-																						}
-																					},
-																					{
-																						ctor: '::',
-																						_0: _elm_lang$html$Html$text('Go up'),
-																						_1: {ctor: '[]'}
-																					}),
+																				_0: _mica5$clarify$View$topLevelButton,
 																				_1: {
 																					ctor: '::',
-																					_0: ((!completed) && (subtaskMode && (_elm_lang$core$Native_Utils.cmp(
-																						_elm_lang$core$List$length(parentTasks),
-																						0) > 0))) ? A2(
-																						_elm_lang$html$Html$div,
-																						{ctor: '[]'},
+																					_0: A2(
+																						_elm_lang$html$Html$button,
 																						{
 																							ctor: '::',
-																							_0: _mica5$clarify$View$inlineBlueH2('Hierarchy above current subtask view:'),
+																							_0: _elm_lang$html$Html_Events$onClick(_mica5$clarify$Msg$UpOneLevel),
 																							_1: {
 																								ctor: '::',
-																								_0: A3(_mica5$clarify$View$taskListToHtmlTable, model, parentTasks, completed),
+																								_0: _mica5$clarify$View$buttonStyle,
 																								_1: {
 																									ctor: '::',
-																									_0: _mica5$clarify$View$inlineBlueH2('Subtasks:'),
+																									_0: _mica5$clarify$View$width100p,
 																									_1: {ctor: '[]'}
 																								}
 																							}
-																						}) : _elm_lang$html$Html$text(''),
+																						},
+																						{
+																							ctor: '::',
+																							_0: _elm_lang$html$Html$text('Go up'),
+																							_1: {ctor: '[]'}
+																						}),
 																					_1: {
 																						ctor: '::',
 																						_0: (_elm_lang$core$Native_Utils.cmp(
@@ -12036,8 +12061,8 @@ var _mica5$clarify$View$lifeGoalsView = function (model) {
 			}));
 };
 var _mica5$clarify$View$currentView = function (model) {
-	var _p5 = model.state;
-	switch (_p5) {
+	var _p7 = model.state;
+	switch (_p7) {
 		case 'TodayState':
 			return _mica5$clarify$View$todayView(model);
 		case 'TaskState':
